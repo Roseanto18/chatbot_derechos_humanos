@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derechos Humanos en la Facultad de Ingeniería UAEMéx</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 h-screen flex flex-col">
+
+    <!-- Encabezado -->
+    <header class="bg-emerald-800 text-white p-4 shadow-md flex justify-between items-center border-b-4 border-amber-500">
+        <div>
+            <h1 class="text-lg sm:text-xl font-bold">Derechos Humanos en la Facultad de Ingeniería UAEMéx</h1>
+            <div class="text-xs font-semibold text-amber-300 mt-0.5 tracking-wide">[PROYECTO DE NORMATIVIDAD IIA 2026]</div>
+            <p class="text-xs text-amber-200 mt-1">Orientación estudiantil, apoyo a víctimas y salud mental</p>
+        </div>
+        <a href="tel:911" class="bg-red-600 text-white text-xs px-3 py-1 rounded-full font-semibold animate-pulse shadow whitespace-nowrap">
+            Emergencias: 911
+        </a>
+    </header>
+
+    <!-- Chat -->
+    <main class="flex-1 overflow-y-auto p-4 max-w-4xl w-full mx-auto flex flex-col" id="scroll-area">
+        <div id="chat-box" class="flex flex-col gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex-1"></div>
+    </main>
+
+    <!-- Entrada -->
+    <footer class="bg-white border-t border-slate-200 p-3 shadow-lg">
+        <form id="chat-form" class="max-w-4xl mx-auto flex gap-2">
+            <input type="text" id="user-input" maxlength="500" autocomplete="off"
+                   placeholder="Cuéntame qué te pasó o pregunta por tus derechos..."
+                   class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-700 text-sm" required>
+            <button type="submit"
+                    class="bg-emerald-800 text-white px-6 py-2 rounded-xl text-sm font-semibold hover:bg-emerald-900 transition border-b-2 border-amber-500">
+                Enviar
+            </button>
+        </form>
+        <p class="max-w-4xl mx-auto text-[11px] text-slate-500 mt-2 text-center">
+            Asistente automatizado (no es una persona ni un abogado). Información orientativa. No se guardan tus mensajes. <a href="/privacidad" class="underline text-emerald-700">Aviso de privacidad</a>
+        </p>
+    </footer>
+
+    <!-- Aviso de privacidad al entrar (se muestra en cada carga; no se guarda nada en el navegador) -->
+    <div id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title"
+         class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-5 border-t-4 border-amber-500 max-h-[90vh] overflow-y-auto">
+            <h2 id="privacy-title" class="text-lg font-bold text-emerald-800">🔐 Aviso de privacidad</h2>
+            <p class="text-sm text-slate-700 mt-2">
+                Este asistente es un <b>proyecto académico</b> de la Facultad de Ingeniería UAEMéx. Antes de empezar, esto es lo importante:
+            </p>
+            <ul class="list-disc pl-5 mt-2 text-sm text-slate-700 space-y-1">
+                <li><b>No guardamos tus mensajes</b> y no te pedimos nombre, correo ni cuenta.</li>
+                <li>No enviamos lo que escribes a terceros ni a ninguna IA externa.</li>
+                <li>El servicio de alojamiento puede registrar datos técnicos de conexión (como la IP).</li>
+                <li><b>Evita escribir datos que te identifiquen</b> (nombre completo, matrícula, teléfono).</li>
+                <li>Es orientación informativa: <b>no sustituye a un abogado</b>. En emergencia, llama al <b>911</b>.</li>
+            </ul>
+            <p class="text-sm mt-3">
+                <a href="/privacidad" target="_blank" rel="noopener" class="text-emerald-700 underline font-semibold">Leer el aviso completo y cómo ejercer tus derechos ARCO</a>
+            </p>
+            <button id="privacy-accept" type="button"
+                    class="mt-4 w-full bg-emerald-800 text-white px-6 py-2 rounded-xl text-sm font-semibold hover:bg-emerald-900 transition border-b-2 border-amber-500">
+                Entendido, continuar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const MENU = {{ menu|tojson }};
+        const chatBox = document.getElementById('chat-box');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+        const scrollArea = document.getElementById('scroll-area');
+
+        const BOT_CLASS = 'self-start bg-slate-100 text-slate-800 border-l-4 border-amber-500 rounded-r-2xl rounded-bl-2xl';
+        const USER_CLASS = 'self-end bg-emerald-700 text-white rounded-l-2xl rounded-br-2xl whitespace-pre-wrap break-words';
+
+        function scrollDown() { scrollArea.scrollTop = scrollArea.scrollHeight; }
+
+        // Mensaje del usuario: textContent (NUNCA innerHTML) para evitar inyección de código
+        function addUserMessage(text) {
+            const div = document.createElement('div');
+            div.className = `p-3 max-w-xl text-sm shadow-sm ${USER_CLASS}`;
+            div.textContent = text;
+            chatBox.appendChild(div);
+            scrollDown();
+        }
+
+        // Mensaje del bot: el HTML viene de nuestro servidor (contenido curado), por eso sí se permite
+        function addBotMessage(html, suggestions) {
+            const wrap = document.createElement('div');
+            wrap.className = 'self-start max-w-xl w-full flex flex-col gap-2';
+            const div = document.createElement('div');
+            div.className = `p-3 text-sm shadow-sm ${BOT_CLASS}`;
+            div.innerHTML = html;
+            wrap.appendChild(div);
+            if (suggestions && suggestions.length) wrap.appendChild(buildChips(suggestions));
+            chatBox.appendChild(wrap);
+            scrollDown();
+            return wrap;
+        }
+
+        function buildChips(items) {
+            const row = document.createElement('div');
+            row.className = 'flex flex-wrap gap-2';
+            items.forEach(item => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = item.label;
+                b.className = 'text-xs bg-white border border-emerald-700 text-emerald-800 px-3 py-1.5 rounded-full hover:bg-emerald-50 transition';
+                b.addEventListener('click', () => send(item.label, item.id));
+                row.appendChild(b);
+            });
+            return row;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.id = 'typing';
+            div.className = `self-start p-3 text-sm ${BOT_CLASS}`;
+            div.textContent = 'Escribiendo…';
+            chatBox.appendChild(div);
+            scrollDown();
+        }
+        function hideTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+
+        async function send(text, topic) {
+            addUserMessage(text);
+            showTyping();
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text, topic: topic || null })
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                hideTyping();
+                addBotMessage(data.html, data.suggestions);
+            } catch (err) {
+                hideTyping();
+                addBotMessage('Lo siento, ocurrió un error de conexión. Si es una emergencia, llama al <b>911</b>.');
+            }
+        }
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const message = userInput.value.trim();
+            if (!message) return;
+            userInput.value = '';
+            send(message, null);
+        });
+
+        // Aviso de privacidad: se cierra al aceptar (no se guarda nada en el navegador)
+        const privacyModal = document.getElementById('privacy-modal');
+        const privacyAccept = document.getElementById('privacy-accept');
+        privacyAccept.addEventListener('click', () => { privacyModal.remove(); userInput.focus(); });
+        privacyAccept.focus();
+
+        // Mensaje de bienvenida con botones rápidos
+        addBotMessage(
+            'Hola, soy el <b>asistente de derechos humanos de la Facultad de Ingeniería UAEMéx</b>. ' +
+            'Puedo explicarte tus derechos, decirte <b>qué hacer ante una situación</b> y darte los teléfonos ' +
+            'de ayuda del Estado de México y de la universidad.<br><br>' +
+            'Cuéntame qué te pasó con tus palabras (por ejemplo: <i>"un profesor me acosa"</i> o ' +
+            '<i>"me detuvo la policía"</i>), o elige una opción:',
+            MENU
+        );
+    </script>
+</body>
+</html>
