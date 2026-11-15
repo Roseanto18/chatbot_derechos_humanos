@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviso de privacidad integral – Derechos Humanos Facultad de Ingeniería UAEMéx</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<header class="bg-emerald-800 text-white p-4 border-b-4 border-amber-500">
+    <div class="max-w-3xl mx-auto flex justify-between items-center">
+        <h1 class="text-lg font-bold">Aviso de privacidad integral</h1>
+        <a href="/" class="text-sm underline text-amber-200">← Volver al chat</a>
+    </div>
+</header>
+<main class="max-w-3xl mx-auto p-4 space-y-5 text-sm leading-relaxed">
+    <p class="text-xs text-slate-500">Última actualización: 14 de noviembre de 2026 · <a href="/fuentes" class="underline text-emerald-700">Fuentes y base de conocimientos</a></p>
+
+    <section class="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+        <h2 class="font-bold text-base">Resumen en 30 segundos</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><b>No guardamos lo que escribes</b>, no pedimos nombre ni correo, no hay cuentas ni cookies de seguimiento.</li>
+            <li>Tus mensajes <b>no se envían a ninguna IA ni a terceros</b>: el asistente responde con reglas y contenido revisado.</li>
+            <li>El hosting y un servicio de estilos pueden ver datos técnicos de conexión (como tu IP). Evita escribir datos que te identifiquen.</li>
+            <li>Puedes ejercer tus derechos <b>ARCO</b> y presentar dudas o quejas con el contacto del punto 12.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">1. Identidad y domicilio del responsable</h2>
+        <p>Este asistente es un <b>proyecto académico</b> de estudiantes de la Licenciatura en Ingeniería en Inteligencia Artificial de la
+        Facultad de Ingeniería de la UAEMéx, desarrollado para la materia <i>Normatividad de la Inteligencia Artificial</i>.
+        No es un servicio oficial de la Universidad ni de ninguna autoridad.</p>
+        <p class="mt-1">Responsable: <b>Equipo 2</b> · Contacto: <b>ragustina001@uaemex.mx</b>.</p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">2. Datos personales que tratamos</h2>
+        <div class="overflow-x-auto">
+        <table class="w-full text-left border border-slate-200 bg-white">
+            <thead class="bg-slate-100"><tr><th class="p-2">Dato</th><th class="p-2">¿Lo tratamos?</th><th class="p-2">Detalle</th></tr></thead>
+            <tbody class="divide-y divide-slate-200">
+                <tr><td class="p-2">Datos de identificación (nombre, correo, matrícula, teléfono, CURP)</td><td class="p-2"><b>No</b></td><td class="p-2">No los solicitamos ni los almacenamos.</td></tr>
+                <tr><td class="p-2">Texto de tus mensajes</td><td class="p-2">Solo en memoria</td><td class="p-2">Se usa un instante para elegir la respuesta y <b>no se guarda ni se registra</b>.</td></tr>
+                <tr><td class="p-2">Datos técnicos de conexión (IP, fecha y hora, ruta visitada, navegador)</td><td class="p-2">Los proveedores técnicos</td><td class="p-2">El hosting puede registrarlos en sus bitácoras (punto 6). No incluyen el contenido de tus mensajes.</td></tr>
+                <tr><td class="p-2">Datos sensibles (salud, orientación sexual, origen étnico, etc.)</td><td class="p-2"><b>No los pedimos</b></td><td class="p-2">Si decides escribirlos, se tratan igual que cualquier mensaje: solo en memoria. Aun así, <b>te recomendamos no hacerlo</b>.</td></tr>
+                <tr><td class="p-2">Cookies, almacenamiento local, publicidad o analítica</td><td class="p-2"><b>No</b></td><td class="p-2">El aviso al entrar se muestra en cada visita justamente porque no guardamos nada en tu navegador.</td></tr>
+            </tbody>
+        </table>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">3. Finalidades</h2>
+        <p><b>Finalidad única:</b> darte orientación informativa sobre derechos humanos y datos de contacto de instituciones.
+        <b>No tenemos finalidades secundarias</b>: no hacemos perfiles, mercadotecnia, publicidad ni decisiones automatizadas sobre ti,
+        y no vendemos ni cedemos información.</p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">4. Cómo funciona el asistente (transparencia sobre la tecnología)</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>Es un sistema <b>basado en reglas</b>: busca palabras clave en tu mensaje y muestra una respuesta ya redactada y revisada. <b>No usa un modelo de lenguaje generativo</b> ni inventa respuestas.</li>
+            <li>Por eso puede <b>equivocarse o no entender</b> tu mensaje; cuando no entiende, te ofrece el menú de temas.</li>
+            <li>No toma decisiones sobre ti ni sustituye a una persona abogada, psicóloga o autoridad. Es información <b>orientativa</b>.</li>
+            <li>Si en el futuro se incorporara un modelo de lenguaje externo, este aviso se actualizará <b>antes</b> y se te informará con claridad qué datos se enviarían.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">5. Base y marco normativo</h2>
+        <p>Este aviso se redactó tomando como referencia el Art. 16 de la Constitución (protección de datos personales y derechos ARCO),
+        la <b>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</b> (publicada en el DOF el 20 de marzo de 2025) y los principios de
+        licitud, finalidad, lealtad, proporcionalidad, información y responsabilidad que ahí se establecen. Al ser un proyecto académico sin almacenamiento de datos,
+        <b>aplicamos el criterio de mínima recolección</b>: lo más protector es no recabar lo que no necesitamos.
+        <i>Nota: la determinación final de qué ley aplica a un proyecto universitario corresponde a la Facultad o a la persona docente.</i></p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">6. Encargados y servicios de terceros (transferencias)</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><b>Render</b> (alojamiento del sitio): procesa las solicitudes técnicas y puede registrar IP, fecha y ruta en sus bitácoras de servidor. No recibe un historial de tu conversación porque no se guarda.</li>
+            <li><b>cdn.tailwindcss.com</b> (estilos): al cargar la página, ese servicio externo puede recibir tu IP y datos básicos del navegador.</li>
+            <li>Los enlaces a sitios oficiales (CODHEM, CNDH, UAEMéx, etc.) abren <b>sitios de terceros con sus propios avisos de privacidad</b>.</li>
+            <li>Fuera de lo anterior, <b>no transferimos</b> datos a ninguna otra persona u organización.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">7. Personas menores de edad</h2>
+        <p>El asistente puede ser consultado por adolescentes. <b>No recabamos datos de nadie, tampoco de menores</b>. Si eres menor de edad,
+        te recomendamos usarlo con el acompañamiento de una persona adulta de confianza y <b>no escribir tu nombre, escuela ni domicilio</b>.
+        Si estás en peligro, llama al <b>911</b>.</p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">8. Conservación</h2>
+        <p>Los mensajes <b>no se conservan</b>: desaparecen de la memoria al terminar de procesarse. Los registros técnicos del proveedor de alojamiento se conservan según
+        sus propias políticas, que no controlamos.</p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">9. Tus derechos ARCO y cómo ejercerlos</h2>
+        <p>Tienes derecho a <b>A</b>cceder a tus datos, <b>R</b>ectificarlos si son inexactos, <b>C</b>ancelarlos y <b>O</b>ponerte a su tratamiento.
+        Como <b>no almacenamos tus mensajes ni datos de identificación</b>, normalmente no existe información tuya que consultar, corregir o borrar;
+        la <b>oposición</b> la ejerces simplemente dejando de usar el asistente.</p>
+        <p class="mt-1">Si crees que hay un dato tuyo, envía un correo a <b>ragustina001@uaemex.mx</b> indicando: (1) tu nombre y un medio para responderte,
+        (2) qué derecho quieres ejercer y (3) la descripción de los datos. Responderemos <b>en un máximo de 20 días</b> y, si procede, haremos efectiva tu solicitud
+        <b>en los 15 días siguientes</b>, plazos que la ley federal fija para estos casos. Ejercer tus derechos es <b>gratuito</b>.</p>
+        <p class="mt-1">Si no recibes respuesta o no estás de acuerdo, puedes presentar una solicitud de protección de datos ante la autoridad competente
+        (para particulares, la <b>Secretaría Anticorrupción y Buen Gobierno</b>). <i>Verifica en su sitio oficial el procedimiento vigente.</i></p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">10. Revocación y limitación de uso</h2>
+        <p>Como no existe consentimiento que se guarde ni lista de datos, no hay nada que “dar de baja”. Puedes <b>limitar el uso</b> evitando escribir datos
+        que te identifiquen y puedes dejar de usar el asistente en cualquier momento.</p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">11. Seguridad</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>La conexión usa HTTPS.</li>
+            <li>Los mensajes se muestran como texto (no como código) para evitar inyección de contenido.</li>
+            <li>El sistema limita la longitud de los mensajes (500 caracteres).</li>
+            <li>Ningún sistema es 100 % seguro; por eso insistimos en no compartir datos sensibles ni de otras personas.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">12. Contacto, dudas y quejas</h2>
+        <p>Escríbenos a <b>ragustina001@uaemex.mx</b>. Si el contenido de una respuesta es incorrecto o está desactualizado, avísanos para corregirlo
+        (los teléfonos y las leyes cambian). También puedes consultar la página de <a href="/fuentes" class="underline text-emerald-700">fuentes y base de conocimientos</a>.</p>
+    </section>
+
+    <section>
+        <h2 class="font-bold text-base">13. Cambios a este aviso</h2>
+        <p>Si agregamos alguna función que trate datos personales (por ejemplo, cuentas de usuario, historial de chat o un modelo de lenguaje externo),
+        actualizaremos este aviso <b>antes</b> de activarla y lo indicaremos con claridad. La fecha de la última actualización aparece al inicio.</p>
+    </section>
+
+    <p class="text-xs text-slate-500">Este aviso es informativo y de carácter académico; no sustituye asesoría jurídica.</p>
+</main>
+</body>
+</html>
