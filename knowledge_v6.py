@@ -20,6 +20,8 @@ Todo dato que cambia con el tiempo lleva la nota "verifica".
 CONTACTS_V6 = {}
 
 SOURCES_V6 = [
+    {"name": "Ley de Transparencia y Acceso a la Información Pública del Estado de México y Municipios (Gaceta del Gobierno, 1-oct-2026)",
+     "url": "https://legislacion.edomex.gob.mx/"},
     {"name": "Ley General de Transparencia y Acceso a la Información Pública (nueva ley, DOF 20-03-2025)",
      "url": "https://www.diputados.gob.mx/LeyesBiblio/pdf/LGTAIP.pdf"},
     {"name": "Transparencia Mexiquense – portal de transparencia y datos abiertos (Secretaría de la Contraloría del Edomex)",
@@ -45,7 +47,8 @@ TOPICS_V6 = [
             ("pedir informacion al gobierno", 9), ("informacion publica", 6), ("unidad de transparencia", 8),
             ("plataforma nacional de transparencia", 10), ("sujetos obligados", 7), ("sujeto obligado", 7),
             ("transparencia", 4), ("maxima publicidad", 8), ("cuanto tardan en responder", 7),
-            ("plazo para responder", 6),
+            ("plazo para responder", 6), ("ley de transparencia", 9), ("ley de transparencia del estado de mexico", 12),
+            ("ley de transparencia del edomex", 12), ("ley estatal de transparencia", 11), ("transparencia en el estado de mexico", 9),
         ],
         "intro": (
             "El <b>acceso a la información pública</b> es un derecho humano (Art. 6° de la Constitución). La <b>Ley General de Transparencia y "
@@ -66,22 +69,23 @@ TOPICS_V6 = [
             "<b>Costos</b> (Art. 143): solo pueden cobrarte materiales de reproducción, envío y certificación. <b>Es gratis</b> si son <b>no más de 20 hojas simples</b>, y la "
             "Unidad puede exentar el pago según tu situación socioeconómica.",
             "<b>Nadie puede ser sancionado o investigado</b> por ejercer este derecho (Art. 5).",
+            "<b>No tienes que explicar para qué quieres la información:</b> los sujetos obligados no pueden recabar datos que lleven a indagar los motivos de la solicitud ni el uso que le darás (Art. 121 de la ley estatal).",
         ],
         "pasos_titulo": "Cómo pedirla, paso a paso",
         "pasos": [
             "<b>Identifica a quién se la pides:</b> la institución que tiene o debería tener esa información. Si no es competente, debe avisarte <b>dentro de 3 días</b> "
-            "y, si puede, decirte a quién acudir (Art. 138).",
+            "y, si puede, decirte a quién acudir (Art. 138 de la ley general; Art. 133 de la ley estatal, en días hábiles).",
             "<b>Presenta la solicitud ante su Unidad de Transparencia</b> por la <b>Plataforma Nacional de Transparencia</b>, en la oficina, por correo electrónico, correo postal, "
-            "mensajería, telégrafo o <b>verbalmente</b> (Art. 124).",
+            "mensajería, telégrafo o <b>verbalmente</b> (Art. 124 de la ley general; Art. 119 de la ley estatal).",
             "<b>Guarda tu folio o acuse.</b> En la Plataforma el folio se asigna solo; si la presentas por otro medio, la Unidad debe registrarla en 5 días y enviarte un acuse con la fecha, el folio y los plazos (Art. 125).",
             "<b>Plazo de respuesta:</b> máximo <b>20 días hábiles</b> desde el día siguiente a la presentación; excepcionalmente se amplía hasta <b>10 días más</b> si el "
-            "Comité de Transparencia lo justifica antes de que venza (Arts. 128 y 134).",
+            "Comité de Transparencia lo justifica antes de que venza (Arts. 128 y 134 de la ley general; Art. 129 de la ley estatal).",
             "Si tu solicitud es poco clara, pueden <b>prevenirte una sola vez</b> (dentro de 5 días); tendrás hasta 10 días para aclararla. Si no lo haces, se tiene por no presentada (Art. 130).",
             "Si no te responden o no estás conforme con la respuesta, puedes presentar un <b>recurso de revisión</b> (consulta el tema <i>“Me negaron información”</i>).",
-            "<i>Ojo:</i> esta ley fija las <b>bases mínimas</b> del procedimiento (Art. 2, fracc. III); la ley estatal del Estado de México puede precisar detalles. <b>Verifica</b> la ley estatal vigente.",
+            "<b>Si la institución es del Estado de México</b> (por ejemplo, la UAEMéx o un municipio), aplica además la <b>Ley de Transparencia y Acceso a la Información Pública del Estado de México y Municipios</b> (Gaceta del Gobierno, 1-oct-2026), con el mismo procedimiento: plazos en <b>días hábiles</b>, solicitud ante la Unidad de Transparencia (Arts. 119 a 121), respuesta en máximo 20 días hábiles, ampliables 10 (Art. 129) y costos del Art. 138. La ley general fija las bases mínimas (Art. 2, fracc. III).",
         ],
         "contactos": ["transparencia_mx", "uaemex_portal"],
-        "fundamento": "CPEUM Art. 6°; Ley General de Transparencia y Acceso a la Información Pública (nueva ley, DOF 20-03-2025), Arts. 2, 3, 4, 5, 7, 123 a 128, 130, 134, 138 y 143.",
+        "fundamento": "CPEUM Art. 6°; Ley General de Transparencia y Acceso a la Información Pública (nueva ley, DOF 20-03-2025), Arts. 2, 3, 4, 5, 7, 123 a 128, 130, 134, 138 y 143; Ley de Transparencia y Acceso a la Información Pública del Estado de México y Municipios (Gaceta del Gobierno, 1-oct-2026, decreto 365), Arts. 119 a 121, 125, 129, 133 y 138.",
     },
     {
         "id": "info_reservada_recurso",
@@ -117,7 +121,7 @@ TOPICS_V6 = [
             "en el plazo, entrega en formato o modalidad distinta o incomprensible, costos o tiempos de entrega, falta de trámite, negativa a la consulta directa, o falta de fundamentación y motivación.",
             "<b>Plazo:</b> dentro de los <b>15 días</b> siguientes a la notificación de la respuesta o al vencimiento del plazo para responder (Art. 144). Los plazos en días son <b>hábiles</b> (Art. 128).",
             "<b>Dónde:</b> ante la <b>autoridad garante</b> que corresponda o ante la <b>Unidad de Transparencia</b> que atendió tu solicitud, que debe enviarlo a más tardar al día siguiente (Art. 144). "
-            "En el Estado de México, en general, es <b>Transparencia Mexiquense</b> (verifica cuál es la autoridad garante de la institución a la que le pediste).",
+            "En el Estado de México, en general, es <b>Transparencia Mexiquense</b> (Art. 27 de la ley estatal; verifica cuál es la autoridad garante de la institución a la que le pediste). La ley estatal también fija 15 días hábiles para el recurso (Art. 139), 40 días para resolverlo (Art. 143) y 10 días hábiles para entregar la información si ganas por falta de respuesta (Art. 144).",
             "<b>Qué debe incluir</b> (Art. 146): el sujeto obligado, tu nombre y medio para notificaciones, el <b>folio</b>, la fecha de la respuesta (o de tu solicitud si no respondieron), el acto que recurres, "
             "tus razones de inconformidad y copia de la respuesta. <b>No tienes que ratificarlo.</b>",
             "Si falta algo, te previenen <b>una sola vez</b> y tienes 5 días para corregirlo (Art. 147).",
@@ -126,7 +130,7 @@ TOPICS_V6 = [
             "Si tienes una discapacidad o hablas una lengua indígena, se procurará darte <b>gratuitamente un traductor o intérprete</b> (Art. 144).",
         ],
         "contactos": ["transparencia_mx"],
-        "fundamento": "Ley General de Transparencia y Acceso a la Información Pública (nueva ley, DOF 20-03-2025), Arts. 3 fracc. XXI, 5, 112, 115, 128, 139 y 144 a 149 y 152. La ley estatal puede precisar el procedimiento; verifica la versión vigente.",
+        "fundamento": "Ley General de Transparencia y Acceso a la Información Pública (nueva ley, DOF 20-03-2025), Arts. 3 fracc. XXI, 5, 112, 115, 128, 139 y 144 a 149 y 152; Ley de Transparencia y Acceso a la Información Pública del Estado de México y Municipios (Gaceta del Gobierno, 1-oct-2026), Arts. 27, 106, 108, 109, 139, 141 a 144 y 147.",
     },
     {
         "id": "transparencia_mexiquense",
@@ -150,6 +154,7 @@ TOPICS_V6 = [
             "<b>¿Por qué está en la Contraloría?</b> La LGTAIP define a la autoridad garante local como los órganos encargados de la <b>contraloría</b> u homólogos del Poder Ejecutivo de cada "
             "entidad federativa, que también atienden los asuntos de transparencia de sus municipios (Art. 3, fracc. IV).",
             "<b>Qué hace:</b> recibe y resuelve <b>recursos de revisión</b> sobre solicitudes de información y atiende la <b>protección de datos personales</b> en posesión de instituciones públicas del Estado de México.",
+            "<b>Naturaleza (Art. 27 de la ley estatal):</b> es el órgano administrativo desconcentrado de la Secretaría de la Contraloría que actúa como <b>Autoridad Garante Local</b>, con autonomía técnica y operativa.",
             "Según la prensa estatal, los trámites que estaban en el INFOEM <b>continúan</b> bajo su responsabilidad.",
             "<b>Ojo:</b> según la prensa, el Poder Legislativo local designó a su propia contraloría como autoridad garante (octubre de 2026). La autoridad garante puede variar según el sujeto obligado, "
             "porque la LGTAIP prevé también los órganos internos de control de los poderes y órganos autónomos (Art. 3, fracc. V). <b>Verifica</b> a quién corresponde tu caso.",
@@ -162,7 +167,7 @@ TOPICS_V6 = [
             "<b>Datos personales:</b> primero ejerce tus derechos ARCO ante el responsable; si no te atiende, acude a la autoridad garante (consulta <i>“Mis datos personales”</i>).",
         ],
         "contactos": ["transparencia_mx"],
-        "fundamento": "Ley General de Transparencia y Acceso a la Información Pública (DOF 20-03-2025), Art. 3 fracs. III a V; datos de contacto institucionales (la dirección, el conmutador 722 275 6700 y la línea 800 466 3786 coinciden con los publicados por la Secretaría de la Contraloría del Estado de México); creación de Transparencia Mexiquense y extinción del INFOEM según prensa estatal (octubre de 2026). Verifica en el portal oficial.",
+        "fundamento": "Ley General de Transparencia y Acceso a la Información Pública (DOF 20-03-2025), Art. 3 fracs. III a V; Ley de Transparencia y Acceso a la Información Pública del Estado de México y Municipios (Gaceta del Gobierno, 1-oct-2026), Arts. 3 fracc. III y 27; datos de contacto institucionales (la dirección, el conmutador 722 275 6700 y la línea 800 466 3786 coinciden con los publicados por la Secretaría de la Contraloría del Estado de México); creación de Transparencia Mexiquense y extinción del INFOEM según prensa estatal (octubre de 2026). Verifica en el portal oficial.",
     },
 
     # ====================================================================== PLAN NACIONAL DE IA
