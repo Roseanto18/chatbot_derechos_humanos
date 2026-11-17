@@ -201,7 +201,7 @@ TOPICS_NUEVOS = [
         "titulo": "Unidad 4 – Áreas específicas de regulación en IA",
         "emoji": "⚖️",
         "boton": "Unidad 4: áreas de regulación",
-        "relacionados": ["ia_derechos_humanos", "datos_y_derechos_humanos", "ia_sesgos", "ia_libertad_expresion",
+        "relacionados": ["ia_derechos_humanos", "ia_plan_nacional", "ia_chapultepec", "datos_y_derechos_humanos", "ia_sesgos", "ia_libertad_expresion",
                          "ia_responsabilidad", "ia_salud_finanzas", "ia_seguridad_educacion_empleo",
                          "ia_alto_riesgo", "ia_generativa", "ia_vehiculos_robots"],
         "keywords": [
@@ -296,12 +296,12 @@ TOPICS_NUEVOS = [
         "pasos_titulo": "Calendario (verifica fechas vigentes)",
         "pasos": [
             "<b>2-feb-2025:</b> aplican las prohibiciones (Art. 5) y la alfabetización en IA. <b>2-ago-2025:</b> reglas para modelos de propósito general y gobernanza.",
-            "<b>2-ago-2026:</b> fecha general de aplicación prevista originalmente. En 2026 la UE acordó con el <b>Digital Omnibus</b> aplazar el <b>alto riesgo del Anexo III a 2-dic-2027</b> y el del <b>Anexo I a 2-ago-2028</b>, "
-            "y añadir una prohibición de sistemas que generen material de abuso sexual infantil o contenido íntimo no consentido a partir del 2-dic-2026 (acuerdo político de mayo de 2026; confirma el texto final publicado).",
+            "<b>2-ago-2026:</b> fecha general de aplicación prevista originalmente. Con el <b>Digital Omnibus</b> (Reglamento (UE) 2026/1744, publicado el 24-jul-2026) se aplazó el <b>alto riesgo del Anexo III a 2-dic-2027</b> y el del <b>Anexo I a 2-ago-2028</b>, "
+            "y añadir una prohibición de sistemas que generen material de abuso sexual infantil o contenido íntimo no consentido a partir del 2-dic-2026 (Art. 5(1), letras ba y bb, según el texto publicado).",
             "<b>Para ti como ingeniero/a:</b> si tu sistema se usa en la UE, aplica aunque lo desarrolles en México. Clasifica tu sistema por nivel de riesgo y documenta datos, pruebas y supervisión humana.",
         ],
         "contactos": [],
-        "fundamento": "Reglamento (UE) 2024/1689, Arts. 2, 4, 5, 6, 50, 51 a 56, 85, 86 y 99 y Anexos I y III; Comisión Europea y Parlamento Europeo (Digital Omnibus, 2026); Programa de Normatividad de la IA, Unidad 3 (3.1.3).",
+        "fundamento": "Reglamento (UE) 2024/1689, Arts. 2, 4, 5, 6, 50, 51 a 56, 85, 86 y 99 y Anexos I y III; Reglamento (UE) 2026/1744 (Digital Omnibus, DOUE 24-jul-2026); Programa de Normatividad de la IA, Unidad 3 (3.1.3).",
     },
     {
         "id": "ue_dsa_dma",
