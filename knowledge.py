@@ -59,11 +59,20 @@ CONTACTS = {
         "phone": "(722) 275 8664",
         "note": "Consejería Jurídica, Paseo de los Cisnes Núm. 49, Col. La Asunción, Metepec.",
         "url": "https://ceavem.edomex.gob.mx/"},
-    "infoem": {"name": "INFOEM – Transparencia y datos personales del Edomex",
-               "url": "https://www.infoem.org.mx"},
+    "transparencia_mx": {
+        "name": "Transparencia Mexiquense – Autoridad garante local de transparencia y datos personales (sustituyó al INFOEM)",
+        "phone": "722 276 0091", "phone2": "722 275 6700", "phone3": "800 466 3786", "phone4": "070",
+        "note": "Atiende acceso a la información y datos personales en posesión de instituciones públicas del Estado de México."
+                "<br>📍 Módulo de Transparencia: Av. Primero de Mayo No. 1731 (esq. Robert Bosch), Planta Baja, "
+                "Col. Zona Industrial, C.P. 50071, Toluca, Estado de México."
+                "<br>🕘 Atención presencial: lunes a viernes, de 9:00 a 18:00 h."
+                "<br>☎️ Línea gratuita 24/7: <b>800 HONESTO</b> (800 466 3786) y marcación rápida <b>070</b>.",
+        "url": "http://portal.secogem.gob.mx/transparencia-datos-abiertos"},
     "profedet": {
         "name": "PROFEDET – Procuraduría Federal de la Defensa del Trabajo",
-        "note": "Asesoría y representación gratuitas en asuntos laborales. VERIFICAR teléfono y oficina vigentes en su sitio.",
+        "phone": "800 717 2942",
+        "phone2": "800 555 0199",
+        "note": "Asesoría y representación gratuitas en asuntos laborales. WhatsApp 55 1484 8737; correo orientacionprofedet@stps.gob.mx; Atención Ciudadana 079. Sede: Eje 4 Norte No. 311, Col. Santo Tomás, Azcapotzalco, CDMX.",
         "url": "https://www.gob.mx/profedet"},
     "sabg": {
         "name": "Secretaría Anticorrupción y Buen Gobierno (autoridad en datos personales, sector privado)",
@@ -107,8 +116,6 @@ CONTACTS = {
 SOURCES = [
     {"name": "Constitución Política de los Estados Unidos Mexicanos (CPEUM)",
      "url": "https://www.diputados.gob.mx/LeyesBiblio/pdf/CPEUM.pdf"},
-    {"name": "Ley General del Equilibrio Ecológico y la Protección al Ambiente (LGEEPA)",
-     "url": "https://www.diputados.gob.mx/LeyesBiblio/pdf/LGEEPA.pdf"},
     {"name": "Declaración Universal de los Derechos Humanos (ONU)",
      "url": "https://www.un.org/es/about-us/universal-declaration-of-human-rights"},
     {"name": "Ley General de Víctimas (México)",
@@ -127,7 +134,7 @@ SOURCES = [
      "url": "https://normlex.ilo.org/dyn/nrmlx_es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C190"},
     {"name": "Ley Federal de Protección de Datos Personales en Posesión de los Particulares (2025)",
      "url": "https://www.diputados.gob.mx/LeyesBiblio/index.htm"},
-    {"name": "Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de México y Municipios (texto de 2017)",
+    {"name": "Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de México y Municipios (Gaceta del Gobierno, 1-oct-2026)",
      "url": "https://legislacion.edomex.gob.mx/"},
     {"name": "Recomendación sobre la Ética de la Inteligencia Artificial (UNESCO, 2021)",
      "url": "https://unesdoc.unesco.org/ark:/48223/pf0000380455_spa"},
@@ -558,7 +565,8 @@ TOPICS = [
         "titulo": "Protección de datos personales",
         "emoji": "🔒",
         "boton": "Mis datos personales",
-        "relacionados": ["datos_y_derechos_humanos", "caso_datos", "violencia_digital", "ia_derechos_humanos", "privacidad_bot"],
+        "relacionados": ["datos_y_derechos_humanos", "caso_datos", "violencia_digital", "ia_derechos_humanos", "privacidad_bot",
+                         "acceso_informacion", "transparencia_mexiquense"],
         "keywords": [
             ("datos personales", 6), ("proteccion de datos", 8), ("privacidad", 3), ("aviso de privacidad", 6), ("arco", 3),
             ("derechos arco", 9), ("mi informacion", 2), ("compartieron mis datos", 6), ("difundieron mis datos", 6),
@@ -579,18 +587,18 @@ TOPICS = [
             "Para <b>datos sensibles</b>, quien los trata necesita tu <b>consentimiento expreso y por escrito</b> (LFPDPPP Art. 8).",
             "Ejercer ARCO es <b>gratuito</b>; solo pueden cobrarte costos de reproducción o envío (LFPDPPP Art. 34). Ejercer un derecho no te impide ejercer otro (Art. 21).",
             "Plazos (LFPDPPP Art. 31): el responsable debe contestarte en <b>máximo 20 días</b> y, si procede, cumplir en los <b>15 días</b> siguientes; los plazos pueden ampliarse una sola vez por un periodo igual.",
-            "<b>Instituciones públicas del Estado de México</b> (gobierno estatal y municipal, organismos autónomos): en el texto de la ley estatal de 2017 que se revisó, responden en <b>máximo 20 días</b> (ampliables una vez hasta 10) y puedes presentar un <b>recurso de revisión</b> dentro de <b>15 días</b> ante el Instituto de transparencia o la Unidad de Transparencia (Arts. 108 y 128). <b>VERIFICA</b> que no haya cambiado: el Congreso mexiquense aprobó leyes nuevas en la materia.",
+            "<b>Instituciones públicas del Estado de México</b> (gobierno estatal y municipal, organismos autónomos): según la ley estatal vigente (Gaceta del Gobierno, 1-oct-2026), responden en <b>máximo 20 días</b> (ampliables una vez hasta 10) y, si procede, lo hacen efectivo en <b>15 días</b> más (Art. 47). Si no estás conforme, puedes presentar un <b>recurso de revisión</b> dentro de <b>15 días</b> ante <b>Transparencia Mexiquense</b> o ante la Unidad de Transparencia (Art. 88).",
         ],
         "pasos_titulo": "Cómo ejercerlos",
         "pasos": [
             "Presenta tu solicitud <b>por escrito</b> al responsable (la empresa, la escuela o la institución) indicando tus datos, qué derecho ejerces y qué datos te interesan, y <b>conserva el acuse</b>.",
             "Si <b>no responde</b> en el plazo o la respuesta es insuficiente, puedes presentar una <b>solicitud de protección de datos</b> ante la autoridad: dentro de 15 días tras la respuesta, o desde que venció el plazo si no contestó (LFPDPPP Art. 40). Para <b>particulares</b> (empresas, comercios, plataformas) la autoridad es la <b>Secretaría Anticorrupción y Buen Gobierno</b>.",
-            "Si el responsable es una <b>institución pública</b> (por ejemplo, la universidad), aplica la ley para <b>sujetos obligados</b> y hay una Unidad de Transparencia; la solicitud puede ser por escrito, verbal o por medios electrónicos y debe llevar tu nombre, un medio para notificarte, una identificación y la descripción clara de los datos (Arts. 109 y 110 de la ley estatal de 2017). <b>VERIFICA</b> cuál es hoy la autoridad garante en el Estado de México, porque las leyes de la materia cambiaron en 2025 y 2026.",
+            "Si el responsable es una <b>institución pública</b> (por ejemplo, la universidad), aplica la ley para <b>sujetos obligados</b> y hay una Unidad de Transparencia; la solicitud debe llevar tu nombre, un medio para recibir notificaciones, un documento que acredite tu identidad y la descripción clara de los datos y del derecho que ejerces (Arts. 45 y 48 de la ley estatal de 2026). La autoridad garante local es <b>Transparencia Mexiquense</b>, que sustituyó al INFOEM.",
             "Si difundieron tus <b>fotos o videos íntimos</b>, no es solo un tema de datos: puede ser el delito de la Ley Olimpia. Consulta el tema de violencia digital y acude al Ministerio Público.",
             "<b>Cuida tus datos:</b> lee los avisos de privacidad, no compartas contraseñas, CURP ni documentos por chats, y pregunta para qué te piden cada dato.",
         ],
-        "contactos": ["sabg", "ceavem", "fgjem"],
-        "fundamento": "CPEUM Art. 6° y 16; Ley Federal de Protección de Datos Personales en Posesión de los Particulares (nueva ley, DOF 20-03-2025; Arts. 8, 21 a 34 y 40); Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados (2025); Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de México y Municipios (texto de 2017, sin reformas; Arts. 108, 109, 110 y 128). VERIFICA la ley estatal vigente en el Edomex.",
+        "contactos": ["sabg", "transparencia_mx", "ceavem", "fgjem"],
+        "fundamento": "CPEUM Art. 6° y 16; Ley Federal de Protección de Datos Personales en Posesión de los Particulares (nueva ley, DOF 20-03-2025; Arts. 8, 21 a 34 y 40); Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados (2025); Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de México y Municipios (Gaceta del Gobierno, 1-oct-2026; Arts. 45, 47, 48 y 88).",
     },
     {
         "id": "privacidad_bot",
@@ -1292,7 +1300,7 @@ TOPICS = [
         "intro": (
             "El <b>abuso laboral</b> es cualquier conducta abusiva en el trabajo que daña tu dignidad, salud, libertad o seguridad: "
             "humillaciones, amenazas, explotación, discriminación, acoso u hostigamiento. El Art. 123 de la Constitución reconoce que "
-            "<b>toda persona tiene derecho al trabajo digno y socialmente útil</b>. A nivel internacional, el <b>Convenio 190 de la OIT</b> reconoce el derecho de toda persona "
+            "<b>toda persona tiene derecho al trabajo digno y socialmente útil</b>. A nivel internacional, el <b>Convenio 190 de la OIT</b> (ratificado por México en 2022 y en vigor desde 2023) reconoce el derecho de toda persona "
             "a <b>un mundo del trabajo libre de violencia y acoso</b> (Art. 4)."
         ),
         "derechos_titulo": "Qué se considera violencia en el trabajo",
@@ -1328,22 +1336,22 @@ TOPICS = [
         "keywords": [
             ("mismos que los de un animal", 13), ("mismos derechos que un animal", 13), ("mismos que un animal", 12), ("mismos derechos que los animales", 13), ("los de un animal", 10), ("derechos que un animal", 10), ("igual que un animal", 9), ("derechos de una persona", 9), ("derechos de un animal", 9), ("derechos de los animales", 9),
             ("derechos de las personas y los animales", 10), ("personas y animales", 9), ("persona y un animal", 9),
-            ("persona y animal", 8), ("diferencia entre una persona y un animal", 10), ("familia multiespecie", 9),
+            ("persona y animal", 8), ("diferencia entre una persona y un animal", 10),
             ("derechos humanos y derechos de los animales", 12), ("derechos humanos y animales", 11),
             ("derechos humanos y los animales", 11), ("diferencia entre derechos humanos y derechos de los animales", 14),
             ("derechos humanos y derechos animales", 12), ("derechos animales", 8), ("bienestar animal", 8),
-            ("protección animal", 7), ("proteccion animal", 7), ("lgeepa", 6),
-            ("seres sintientes", 8), ("maltrato animal", 8), ("mascota", 5), ("animales", 4), ("animal", 4),
+            ("protección animal", 7), ("proteccion animal", 7),
+            ("maltrato animal", 8), ("mascota", 5), ("animales", 4), ("animal", 4),
         ],
         "intro": (
-            "<b>No son los mismos, aunque se relacionan.</b> Los <b>derechos humanos</b> pertenecen a las <b>personas</b> por su dignidad; los <b>animales</b> están <b>protegidos por la ley</b> como seres sintientes, "
-            "pero mediante <b>deberes de cuidado</b> que recaen en las personas y en el Estado. La Declaración Universal habla de “todos los seres humanos” y de “toda persona”, y <b>no menciona a los animales</b>. "
+            "<b>No son los mismos, aunque se relacionan.</b> Los <b>derechos humanos</b> pertenecen a las <b>personas</b> por su dignidad; los <b>animales</b> están <b>protegidos por la Constitución</b> mediante la prohibición de su maltrato y "
+            "<b>deberes de cuidado</b> que recaen en las personas y en el Estado. La Declaración Universal habla de “todos los seres humanos” y de “toda persona”, y <b>no menciona a los animales</b>. "
             "En México, la Constitución prohíbe el maltrato animal y habla de “protección”, no de “derechos humanos de los animales”."
             "<table class='mt-3 text-xs border-collapse w-full'>"
             "<tr class='bg-emerald-50'><th class='border border-slate-300 p-1 text-left'>Aspecto</th><th class='border border-slate-300 p-1 text-left'>Derechos humanos (personas)</th><th class='border border-slate-300 p-1 text-left'>Protección de los animales</th></tr>"
-            "<tr><td class='border border-slate-300 p-1 align-top font-semibold'>Fundamento</td><td class='border border-slate-300 p-1 align-top'><b>Dignidad</b> de la persona (DUDH Arts. 1 y 2; CPEUM Art. 1°)</td><td class='border border-slate-300 p-1 align-top'>Su condición de <b>ser sintiente</b> y los <b>deberes de cuidado</b> de las personas y del Estado (CPEUM Art. 4°)</td></tr>"
+            "<tr><td class='border border-slate-300 p-1 align-top font-semibold'>Fundamento</td><td class='border border-slate-300 p-1 align-top'><b>Dignidad</b> de la persona (DUDH Arts. 1 y 2; CPEUM Art. 1°)</td><td class='border border-slate-300 p-1 align-top'>La <b>prohibición del maltrato</b> y el deber del Estado de garantizar su protección, trato adecuado, conservación y cuidado (CPEUM Art. 4°, párrafo sexto)</td></tr>"
             "<tr><td class='border border-slate-300 p-1 align-top font-semibold'>Quién es titular</td><td class='border border-slate-300 p-1 align-top'>Toda persona: puede <b>tener y ejercer</b> derechos y asumir obligaciones (personalidad jurídica, DUDH Art. 6)</td><td class='border border-slate-300 p-1 align-top'>El animal es <b>objeto de protección</b>; no ejerce derechos por sí mismo ni tiene obligaciones. Quien responde es la persona responsable</td></tr>"
-            "<tr><td class='border border-slate-300 p-1 align-top font-semibold'>Norma principal</td><td class='border border-slate-300 p-1 align-top'>Constitución, tratados internacionales y Declaración Universal</td><td class='border border-slate-300 p-1 align-top'>Art. 4° constitucional, LGEEPA (Art. 87 Bis 2) y leyes locales de protección animal</td></tr>"
+            "<tr><td class='border border-slate-300 p-1 align-top font-semibold'>Norma principal</td><td class='border border-slate-300 p-1 align-top'>Constitución, tratados internacionales y Declaración Universal</td><td class='border border-slate-300 p-1 align-top'>Art. 4° constitucional (párrafo sexto), en los términos que señalen las leyes</td></tr>"
             "<tr><td class='border border-slate-300 p-1 align-top font-semibold'>Quién puede exigirlo</td><td class='border border-slate-300 p-1 align-top'>La propia persona, con acceso a recurso efectivo (DUDH Art. 8) y a las instituciones de derechos humanos</td><td class='border border-slate-300 p-1 align-top'>Las personas y las autoridades, mediante denuncia, sanciones administrativas o penales</td></tr>"
             "<tr><td class='border border-slate-300 p-1 align-top font-semibold'>Si se vulnera</td><td class='border border-slate-300 p-1 align-top'>Queja ante la CODHEM o la CNDH, amparo, reparación del daño</td><td class='border border-slate-300 p-1 align-top'>Denuncia por maltrato ante la autoridad local; sanciones previstas por la ley aplicable</td></tr>"
             "</table>"
@@ -1359,15 +1367,12 @@ TOPICS = [
         "pasos_titulo": "Animales: protección y deberes de cuidado",
         "pasos": [
             "<b>Constitución, Art. 4° (párrafo sexto, adición del 2-dic-2024):</b> queda prohibido el maltrato a los animales y el Estado debe garantizar su protección, trato adecuado, conservación y cuidado, “en los términos que señalen las leyes”. El Art. 73 (fracc. XXIX-G) permite una ley que reparta las competencias de la Federación, los estados y los municipios en protección y bienestar animal, y el Art. 3° incluye la protección de los animales en los contenidos educativos.",
-            "<b>LGEEPA, Art. 87 Bis 2:</b> la Federación, los estados y los municipios deben regular el <b>trato digno y respetuoso</b> a los animales con cinco principios: agua y alimento suficientes; ambiente adecuado para descansar y moverse; atención médica veterinaria; expresión de su comportamiento natural; y trato que procure su cuidado según la especie. También ordena sancionar las peleas de perros y permite criar, vender o reproducir perros y gatos solo en lugares autorizados. El Art. 79 (fracc. VIII) busca evitar la crueldad contra los animales.",
-            "<b>Estado de México (Código Civil, Arts. 4.178 a 4.182):</b> reconoce a los animales de compañía como <b>seres sintientes</b> y como parte de la <b>familia multiespecie</b>, con derecho a una vida digna y libre de maltrato, atención veterinaria, alimento, agua, espacio adecuado y socialización. Quien <b>responde</b> es la persona responsable: debe atender sus necesidades y prevenir y denunciar el maltrato.",
-            "<b>Qué falta:</b> el decreto de 2024 ordenó expedir una <b>Ley General de bienestar animal</b>; al revisar (nov. 2026) seguía en proceso legislativo, y el Estado de México también está emitiendo normas de protección animal. <b>VERIFICA</b> su estado y su texto en el Diario Oficial y en la Gaceta del Gobierno antes de citarlas.",
-            "<b>Diferencia clave:</b> los derechos humanos se fundan en la <i>dignidad de la persona</i> y las personas los ejercen y los exigen; la protección animal se fundamenta en que son <i>seres sintientes</i> y se exige mediante los <i>deberes</i> de cuidado de personas y autoridades.",
+            "<b>Diferencia clave:</b> los derechos humanos se fundan en la <i>dignidad de la persona</i> y las personas los ejercen y los exigen; la protección animal se fundamenta en la <i>prohibición constitucional del maltrato</i> y se exige mediante los <i>deberes</i> de cuidado de personas y autoridades.",
             "<b>Lo que comparten:</b> ambos están protegidos contra el maltrato y la crueldad, y el medio ambiente sano es un derecho humano (Art. 4°) que se relaciona con la conservación de la fauna.",
-            "<i>Matiz:</i> que los animales sean “sujetos de derechos” es un debate doctrinal; los textos constitucionales y federales revisados hablan de protección, trato digno y cuidado, no de derechos humanos. Cuando una actividad humana choca con la protección animal, la Constitución remite a “los términos que señalen las leyes” y la solución depende de la ley aplicable y de las autoridades competentes.",
+            "<i>Matiz:</i> que los animales sean “sujetos de derechos” es un debate doctrinal; el texto constitucional habla de protección, trato adecuado y cuidado, no de derechos humanos. Cuando una actividad humana choca con la protección animal, la Constitución remite a “los términos que señalen las leyes” y la solución depende de la ley aplicable y de las autoridades competentes.",
         ],
         "contactos": ["codhem", "cndh"],
-        "fundamento": "CPEUM Arts. 1°, 3°, 4° (párrafo sexto, DOF 02-12-2024) y 73 fracc. XXIX-G, con el Decreto de 2-dic-2024 (transitorio segundo); Declaración Universal de los Derechos Humanos (ONU, 1948), Arts. 1, 2, 6, 7, 8 y 29; Ley General del Equilibrio Ecológico y la Protección al Ambiente (última reforma DOF 19-01-2026), Arts. 79 y 87 Bis 2; Código Civil del Estado de México (Arts. 2.1, 2.2, 2.4, 2.5 y 4.178 a 4.182, última reforma 16-jun-2026).",
+        "fundamento": "CPEUM Arts. 1°, 3°, 4° (párrafo sexto, DOF 02-12-2024) y 73 fracc. XXIX-G, con el Decreto de 2-dic-2024 (transitorio segundo); Declaración Universal de los Derechos Humanos (ONU, 1948), Arts. 1, 2, 6, 7, 8 y 29; Código Civil del Estado de México (Arts. 2.1, 2.2, 2.4 y 2.5, sobre las personas; última reforma 16-jun-2026).",
     },
     # ------------------------------------------------------------------ IA Y DERECHOS HUMANOS (Unidades 4 y 5)
     {
@@ -1375,7 +1380,7 @@ TOPICS = [
         "titulo": "Inteligencia artificial y derechos humanos",
         "emoji": "🤖",
         "boton": "IA y derechos humanos",
-        "relacionados": ["ia_requisitos", "ia_detectar_vulneracion", "ia_sesgos", "ia_libertad_expresion", "ia_responsabilidad", "ia_unesco", "datos_y_derechos_humanos", "ia_eeuu_vs_ue", "caso_ia"],
+        "relacionados": ["ia_plan_nacional", "ia_chapultepec", "ia_requisitos", "ia_detectar_vulneracion", "ia_sesgos", "ia_libertad_expresion", "ia_responsabilidad", "ia_unesco", "datos_y_derechos_humanos", "ia_eeuu_vs_ue", "caso_ia"],
         "keywords": [
             ("ia y derechos humanos", 9), ("derechos humanos y la ia", 9), ("derechos humanos e inteligencia artificial", 9),
             ("derechos humanos y la inteligencia artificial", 9), ("inteligencia artificial", 4), ("chatgpt", 4),
@@ -1455,7 +1460,7 @@ TOPICS = [
             "Diseña para que <b>una persona pueda revisar, corregir y detener</b> al sistema, y avisa a las personas usuarias que hay IA.",
             "Evalúa el impacto <b>antes</b> de desplegar y audita después (ver el tema de cumplimiento, Unidad 5).",
             "En la UE las sanciones por prácticas prohibidas llegan a <b>35 millones de euros o el 7 % del volumen de negocio mundial</b>; por otras infracciones, hasta 15 millones o el 3 % (Art. 99).",
-            "Calendario: en 2026 la UE acordó aplazar las obligaciones de alto riesgo del Anexo III al 2 de diciembre de 2027 (Digital Omnibus). Verifica fechas vigentes.",
+            "Calendario: el Reglamento (UE) 2026/1744 (Digital Omnibus), publicado el 24-jul-2026, aplazó las obligaciones de alto riesgo del Anexo III al 2 de diciembre de 2027 y las del Anexo I al 2 de agosto de 2028.",
         ],
         "contactos": [],
         "fundamento": "Reglamento (UE) 2024/1689 (Arts. 5, 9 a 15, 27, 50, 86 y 99; texto DO 12-07-2024); Recomendación de la UNESCO sobre la ética de la IA (2021, párrs. 26, 29 y 68); NIST AI RMF 1.0 (2023, sección 3); Principios de Chapultepec; Programa de Normatividad de la IA, Unidades 4 y 5.",
@@ -1491,7 +1496,7 @@ TOPICS = [
             "<b>Seguridad pública y vigilancia:</b> la identificación biométrica remota “en tiempo real” en espacios públicos con fines policiales está prohibida salvo excepciones estrictas (búsqueda de víctimas o desaparecidos, amenazas graves, delitos graves) y con autorización previa (Art. 5).",
             "<b>IA generativa:</b> debe avisar que interactúas con una IA y marcar el contenido sintético (audio, imagen, video o texto) para poder detectar deepfakes (Art. 50).",
             "<b>Reconocimiento de emociones y categorización biométrica</b> (cuando están permitidos): se debe informar a las personas expuestas (Art. 50).",
-            "Aplicación en el tiempo: las obligaciones de alto riesgo del Anexo III se aplazaron al 2 de diciembre de 2027 (acuerdo de 2026). Verifica fechas vigentes.",
+            "Aplicación en el tiempo: las obligaciones de alto riesgo del Anexo III se aplazaron al 2 de diciembre de 2027 y las del Anexo I al 2 de agosto de 2028 (Reglamento (UE) 2026/1744, publicado el 24-jul-2026).",
         ],
         "fundamento": "Reglamento (UE) 2024/1689 (Art. 5, Art. 6 y Anexo III, Art. 50); Programa de Normatividad de la IA, Unidad 4 (4.3 y 4.4).",
     },
@@ -1525,7 +1530,7 @@ TOPICS = [
         "derechos": [
             "<b>Reglamento (UE) 2024/1689 (AI Act):</b> prohíbe prácticas incompatibles con los derechos fundamentales y exige requisitos estrictos a la IA de alto riesgo.",
             "Se complementa con el <b>RGPD</b> (datos personales) y con la <b>Ley de Servicios Digitales</b> y la <b>Ley de Mercados Digitales</b>.",
-            "Aplicación escalonada: prohibiciones desde el 2 de febrero de 2025. En 2026 la UE acordó, con el <b>Digital Omnibus</b>, aplazar las obligaciones de alto riesgo del Anexo III al 2 de diciembre de 2027 (acuerdo político con la Comisión; luz verde final del Consejo el 29 de junio de 2026). Verifica fechas vigentes.",
+            "Aplicación escalonada: prohibiciones desde el 2 de febrero de 2025. En 2026 la UE aprobó el <b>Digital Omnibus</b> (Reglamento (UE) 2026/1744, publicado el 24-jul-2026), que aplazó las obligaciones de alto riesgo del Anexo III al 2 de diciembre de 2027 y las del Anexo I al 2 de agosto de 2028.",
         ],
         "pasos_titulo": "Estados Unidos",
         "pasos": [
@@ -1538,7 +1543,7 @@ TOPICS = [
             "<b>Para México:</b> los Principios de Chapultepec se parecen más al enfoque de derechos de la UE, pero son orientadores, no vinculantes. En ambos modelos aparecen principios comunes: transparencia, no discriminación, supervisión humana y rendición de cuentas.",
         ],
         "contactos": [],
-        "fundamento": "Reglamento (UE) 2024/1689; Comisión Europea y Consejo de la UE (Digital Omnibus, 2026); Blueprint for an AI Bill of Rights (OSTP, 2022); NIST AI RMF 1.0 (NIST AI 100-1, enero de 2023); Recomendación de la UNESCO sobre la ética de la IA (2021); Programa de Normatividad de la IA, Unidad 3.",
+        "fundamento": "Reglamento (UE) 2024/1689; Reglamento (UE) 2026/1744 (Digital Omnibus, DOUE 24-jul-2026); Blueprint for an AI Bill of Rights (OSTP, 2022); NIST AI RMF 1.0 (NIST AI 100-1, enero de 2023); Recomendación de la UNESCO sobre la ética de la IA (2021); Programa de Normatividad de la IA, Unidad 3.",
     },
     {
         "id": "ia_cumplimiento",
@@ -1608,20 +1613,20 @@ TOPICS = [
             "<b>No discriminación (Art. 1° CPEUM):</b> los datos sensibles (salud, origen étnico, religión, opiniones políticas, datos biométricos o genéticos, antecedentes penales) pueden causar daños excepcionales si se divulgan, por lo que requieren seguridad total (UNESCO, párr. 74).",
             "<b>Libertad de expresión e información (Art. 6° CPEUM):</b> la vida privada y los datos personales se protegen “en los términos y con las excepciones que fijen las leyes” (Art. 6°, apartado A, fracc. II). No es un derecho absoluto: convive con el acceso a la información.",
             "<b>Derecho a defenderte:</b> si una decisión que te afecta se tomó con tus datos o con un algoritmo, debes poder saber por qué y pedir que una persona la revise (UNESCO, párr. 38; en la UE, Art. 86 del Reglamento de IA).",
-            "<b>Niñas, niños y adolescentes:</b> se privilegia su interés superior y el consentimiento lo da quien ejerce la patria potestad o tutela, por escrito (ley estatal de 2017, Art. 8).",
+            "<b>Niñas, niños y adolescentes:</b> se privilegia su interés superior y el consentimiento lo da quien ejerce la patria potestad o tutela, conforme a la ley estatal (Art. 8), y se considera también su opinión según su autonomía progresiva.",
         ],
         "pasos_titulo": "Reglas y garantías clave",
         "pasos": [
             "<b>Constitución, Art. 16, párrafo segundo:</b> toda persona tiene derecho a la protección de sus datos personales y al acceso, rectificación, cancelación y oposición (ARCO). La ley puede fijar excepciones por seguridad nacional, orden público, seguridad y salud públicas o para proteger derechos de terceros.",
             "<b>Límites con proporcionalidad:</b> cuando un derecho choca con otro (por ejemplo, privacidad y seguridad), cualquier limitación debe tener base legal y ser razonable, necesaria y proporcional (UNESCO, párr. 11).",
-            "<b>Consentimiento válido:</b> libre, específico, informado e inequívoco, y con <b>aviso de privacidad</b> claro (ley estatal de 2017, Arts. 19 y 23). Los datos sensibles, por regla general, solo se tratan con consentimiento expreso (Art. 7).",
-            "<b>Solo lo necesario:</b> el responsable debe tratar datos adecuados y relevantes, y protegerlos con medidas de seguridad. Si hay una vulneración que afecte de forma significativa tus derechos, debe avisarte y avisar al Instituto <b>sin dilación y, de ser posible, en máximo 72 horas</b> (Art. 54 de la ley estatal de 2017).",
-            "<b>Evaluación de impacto:</b> antes de poner en marcha sistemas o tecnologías que traten datos de forma intensiva o relevante (datos sensibles, transferencias), una institución pública debe evaluar el impacto en la protección de datos (ley estatal de 2017, Arts. 70 y 71). La UNESCO pide lo mismo para los sistemas algorítmicos, con enfoque de “privacidad desde el diseño” (párr. 34).",
+            "<b>Consentimiento válido:</b> libre, específico, informado e inequívoco, y con <b>aviso de privacidad</b> claro (ley estatal de 2026, Arts. 16 y 22 a 24). Los datos sensibles, por regla general, solo se tratan con consentimiento expreso (Art. 7).",
+            "<b>Solo lo necesario:</b> el responsable debe tratar datos adecuados y relevantes, y protegerlos con medidas de seguridad. Si hay una vulneración que afecte de forma significativa tus derechos, debe avisarte, y avisar a la autoridad garante, <b>sin dilación alguna</b> en cuanto confirme que ocurrió (Art. 36 de la ley estatal de 2026).",
+            "<b>Evaluación de impacto:</b> antes de poner en marcha sistemas o tecnologías que traten datos de forma intensiva o relevante (datos sensibles, transferencias), una institución pública debe evaluar el impacto en la protección de datos (ley estatal de 2026, Arts. 71 y 72). La UNESCO pide lo mismo para los sistemas algorítmicos, con enfoque de “privacidad desde el diseño” (párr. 34).",
             "<b>Con IA el riesgo crece:</b> la IA puede inferir información privada o identificar personas, y las técnicas de privacidad pueden restar precisión al modelo. El NIST lo reconoce como una disyuntiva que debe resolverse de forma transparente y justificada (AI RMF 1.0, secciones 3 y 3.6).",
             "<b>Tus derechos sobre tus datos:</b> la UNESCO recomienda poder acceder a tus datos personales en sistemas de IA y borrarlos, salvo excepciones legales, y protección reforzada cuando se usan con fines comerciales o se envían al extranjero (párr. 73). Para ejercer ARCO en México, consulta el tema “Mis datos personales”.",
         ],
-        "contactos": ["sabg", "infoem", "codhem"],
-        "fundamento": "CPEUM Arts. 1°, 6° (apartado A, fracc. II) y 16 (párr. segundo); Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de México y Municipios (texto de 2017, sin reformas; Arts. 7, 8, 19, 23, 54, 70 y 71; VERIFICA vigencia, hay leyes nuevas); Recomendación de la UNESCO sobre la ética de la IA (2021, párrs. 11, 32 a 34, 38, 73 y 74); NIST AI RMF 1.0 (2023, secciones 3 y 3.6).",
+        "contactos": ["sabg", "transparencia_mx", "codhem"],
+        "fundamento": "CPEUM Arts. 1°, 6° (apartado A, fracc. II) y 16 (párr. segundo); Ley de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de México y Municipios (Gaceta del Gobierno, 1-oct-2026; Arts. 7, 8, 16, 22 a 24, 36, 71 y 72); Recomendación de la UNESCO sobre la ética de la IA (2021, párrs. 11, 32 a 34, 38, 73 y 74); NIST AI RMF 1.0 (2023, secciones 3 y 3.6).",
     },
     # ------------------------------------------------------------------ UNESCO
     {
@@ -1716,6 +1721,8 @@ TOPICS = [
                          "discriminacion_como_saber", "violencia_docente", "acoso_hostigamiento",
                          "emergencia_menores", "ley_olimpia", "ia_requisitos", "ia_eeuu_vs_ue",
                          "ia_alto_riesgo", "ia_cumplimiento", "ia_unesco", "ia_nist_rmf", "datos_y_derechos_humanos",
+                         "ia_plan_nacional", "ia_chapultepec", "ia_plan_capacidades",
+                         "acceso_informacion", "info_reservada_recurso", "transparencia_mexiquense",
                          "detencion_policia", "victima_delito",
                          "salud_mental", "privacidad_bot", "fuentes"],
         "intro": "Estos son otros temas que puedo explicarte. Elige uno o escríbeme tu pregunta con tus palabras:",
@@ -1853,7 +1860,7 @@ MENU_IDS = ["derechos_generales", "derechos_estudiante", "discriminacion_como_sa
             "acoso_hostigamiento", "proteccion_menores", "emergencia_menores", "donde_ayuda",
             "casos_practicos", "violencia_digital", "salud_mental", "emergencia",
             "violencia_mujeres", "violentometro", "abuso_laboral", "ia_derechos_humanos",
-            "unidad3_hub", "unidad4_hub", "mas_temas"]
+            "unidad3_hub", "unidad4_hub", "acceso_informacion", "ia_plan_nacional", "mas_temas"]
 
 # ---------------------------------------------------------------------------
 # v5: preguntas frecuentes + Unidades 3 y 4 del temario (ver knowledge_unidades.py)
@@ -1863,3 +1870,14 @@ from knowledge_unidades import TOPICS_NUEVOS, CONTACTS_NUEVOS, SOURCES_NUEVAS  #
 TOPICS.extend(TOPICS_NUEVOS)
 CONTACTS.update(CONTACTS_NUEVOS)
 SOURCES.extend(SOURCES_NUEVAS)
+
+# ---------------------------------------------------------------------------
+# v6: LGTAIP (acceso a la información), Transparencia Mexiquense y Plan Nacional de IA
+# (ver knowledge_v6.py)
+# ---------------------------------------------------------------------------
+from knowledge_v6 import TOPICS_V6, CONTACTS_V6, SOURCES_V6  # noqa: E402
+
+TOPICS.extend(TOPICS_V6)
+CONTACTS.update(CONTACTS_V6)
+SOURCES.extend(SOURCES_V6)
+
