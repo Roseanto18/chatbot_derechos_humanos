@@ -89,16 +89,15 @@ class ChatbotModel:
                             "Si es una emergencia, recuerda que el <b>911</b> está disponible las 24 h.",
                     "suggestions": [], "topic": None}
 
-        # 5) SI NO COINCIDE CON REGLAS RIGIDAS: Usamos el LLM (Gemini) con búsqueda web y contexto institucional
+        # 5) SI NINGUNA REGLA LOCAL COINCIDE: ¡Mandamos la pregunta a Gemini con búsqueda web y aviso!
         if self.client:
             try:
-                # Compilar contexto rápido de los fundamentos locales para orientar al modelo
                 contexto_general = "\n".join([f"- {t['titulo']}: {t.get('fundamento', '')}" for t in self.topics.values() if t.get('fundamento')])
                 
                 system_instruction = (
                     "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
                     "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
-                    "Básate en el siguiente marco institucional y utiliza la herramienta de búsqueda web en tiempo real si necesitas contrastar leyes vigentes o datos. "
+                    "Básate en el siguiente marco institucional y utiliza la herramienta de búsqueda web en tiempo real si el usuario pregunta por temas externos, noticias o datos actualizados. "
                     "Reglas estrictas: "
                     "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
                     "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
@@ -111,19 +110,23 @@ class ChatbotModel:
                     contents=user_message,
                     config=types.GenerateContentConfig(
                         system_instruction=system_instruction,
-                        tools=[{"google_search": {}}],  # ¡Salida a internet en tiempo real!
+                        tools=[{"google_search": {}}],
                         temperature=0.3
                     )
                 )
                 
-                html_resp = f"<div class='mt-2'>{response.text.replace('\n', '<br>')}</div><div class='mt-3'>{DISCLAIMER}</div>"
+                # Agregamos un aviso visible indicando que la respuesta viene de la IA
+                aviso_ia = "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>🤖 Respuesta generada con IA y búsqueda web en tiempo real:</div>"
+                html_resp = f"{aviso_ia}<div class='mt-1'>{response.text.replace('\n', '<br>')}</div><div class='mt-3'>{DISCLAIMER}</div>"
+                
                 suggestions = [{"id": i["id"], "label": i["label"]} for i in self.menu()[:3]]
                 return {"html": html_resp, "suggestions": suggestions, "topic": None}
-            except Exception:
-                pass  # Si ocurre algún error con la API, pasa de largo al fallback seguro
+            except Exception as e:
+                print(f"Error con Gemini: {e}")
 
-        # 6) Fallback por defecto si no hay API configurada o falla
+        # 6) Fallback estricto solo si fallara la API
         return self._fallback()
+
 
     # ------------------------------------------------------------------ internos
     @staticmethod
