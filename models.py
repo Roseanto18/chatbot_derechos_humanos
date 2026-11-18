@@ -1,22 +1,8 @@
-"""
-MODELO DEL CHATBOT
-==================
-Motor de orientación basado en reglas y una base de conocimiento curada.
-
-Cómo decide qué responder:
-  1. Normaliza el texto (minúsculas, sin acentos, sin signos).
-  2. Revisa si hay una señal de URGENCIA (crisis emocional / peligro). Si la hay, esa respuesta va primero.
-  3. Puntúa cada tema según las palabras clave que aparecen en el mensaje.
-  4. Responde con el tema de mayor puntaje; si hay otros cercanos, los ofrece como botones.
-  5. Si no entiende, lo dice con transparencia y ofrece el menú (nunca inventa).
-
-Ventaja para un proyecto de normatividad en IA: es 100% explicable y auditable.
-Cada respuesta sale de contenido que tú revisaste, con su fundamento legal, y no se
-envían los mensajes de las personas a ningún servicio externo.
-"""
+import os
 import re
 import unicodedata
-
+from google import genai
+from google.genai import types
 import knowledge as kb
 
 MIN_SCORE = 3          # puntaje mínimo para considerar que se entendió un tema
@@ -24,7 +10,7 @@ URGENT_MIN_SCORE = 3   # puntaje mínimo para activar un tema urgente
 CLOSE_RATIO = 0.6      # otros temas con >= 60 % del puntaje mayor se sugieren como botones
 
 DISCLAIMER = (
-    "<span class='text-xs text-slate-500'>Soy un asistente automatizado: esta información es orientativa "
+    "<span class='text-xs text-slate-500'>Asistente con orientación en derechos humanos y IA: esta información es orientativa "
     "y no sustituye la asesoría de un profesional del derecho.</span>"
 )
 
@@ -50,6 +36,9 @@ def _keyword_hit(keyword: str, norm_text: str, tokens: list) -> bool:
 class ChatbotModel:
     def __init__(self):
         self.topics = {t["id"]: t for t in kb.TOPICS}
+        # Inicializar el cliente de Gemini de forma segura con la variable de entorno de Render
+        api_key = os.environ.get("GEMINI_API_KEY")
+        self.client = genai.Client(api_key=api_key) if api_key else None
 
     # ------------------------------------------------------------------ API pública
     def menu(self):
@@ -72,7 +61,7 @@ class ChatbotModel:
 
         scores = {tid: self._score(t, norm, tokens) for tid, t in self.topics.items()}
 
-        # 1) Urgencias primero
+        # 1) Urgencias primero (Prioridad absoluta por seguridad)
         urgent = [(s, tid) for tid, s in scores.items()
                   if self.topics[tid].get("urgente")
                   and s >= self.topics[tid].get("urgente_min", URGENT_MIN_SCORE)]
@@ -86,7 +75,7 @@ class ChatbotModel:
         if src_score >= MIN_SCORE and src_score >= best:
             return self._sources()
 
-        # 3) Tema con mejor puntaje
+        # 3) Tema con mejor puntaje local
         if best >= MIN_SCORE:
             extra = [tid for tid, s in sorted(scores.items(), key=lambda kv: -kv[1])
                      if tid != best_tid and s >= MIN_SCORE and s >= best * CLOSE_RATIO][:2]
@@ -100,7 +89,40 @@ class ChatbotModel:
                             "Si es una emergencia, recuerda que el <b>911</b> está disponible las 24 h.",
                     "suggestions": [], "topic": None}
 
-        # 5) No se entendió: honesto y con salida
+        # 5) SI NO COINCIDE CON REGLAS RIGIDAS: Usamos el LLM (Gemini) con búsqueda web y contexto institucional
+        if self.client:
+            try:
+                # Compilar contexto rápido de los fundamentos locales para orientar al modelo
+                contexto_general = "\n".join([f"- {t['titulo']}: {t.get('fundamento', '')}" for t in self.topics.values() if t.get('fundamento')])
+                
+                system_instruction = (
+                    "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
+                    "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
+                    "Básate en el siguiente marco institucional y utiliza la herramienta de búsqueda web en tiempo real si necesitas contrastar leyes vigentes o datos. "
+                    "Reglas estrictas: "
+                    "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
+                    "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
+                    "3. Mantén un tono respetuoso, accesible y neutral.\n\n"
+                    f"Contexto institucional:\n{contexto_general}"
+                )
+
+                response = self.client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=user_message,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_instruction,
+                        tools=[{"google_search": {}}],  # ¡Salida a internet en tiempo real!
+                        temperature=0.3
+                    )
+                )
+                
+                html_resp = f"<div class='mt-2'>{response.text.replace('\n', '<br>')}</div><div class='mt-3'>{DISCLAIMER}</div>"
+                suggestions = [{"id": i["id"], "label": i["label"]} for i in self.menu()[:3]]
+                return {"html": html_resp, "suggestions": suggestions, "topic": None}
+            except Exception:
+                pass  # Si ocurre algún error con la API, pasa de largo al fallback seguro
+
+        # 6) Fallback por defecto si no hay API configurada o falla
         return self._fallback()
 
     # ------------------------------------------------------------------ internos
@@ -131,7 +153,7 @@ class ChatbotModel:
         else:
             parts.append(f"<b>{c['name']}</b>")
         phones = []
-        for key in ("phone", "phone2"):
+        for key in ("phone", "phone2", "phone3", "phone4"):
             if c.get(key):
                 digits = re.sub(r"[^0-9]", "", c[key])
                 phones.append(f"<a href='tel:{digits}' class='{LINK_CLASS}'>{c[key]}</a>")
@@ -178,7 +200,7 @@ class ChatbotModel:
             "teléfonos de ayuda del Estado de México y de la universidad.<br><br>"
             "Cuéntame qué te pasó con tus palabras (por ejemplo: <i>\"un profesor me acosa\"</i> o "
             "<i>\"me detuvo la policía\"</i>), o elige una opción:"
-            "<div class='mt-2 text-xs text-slate-500'>No guardo tus mensajes. Si estás en peligro, llama al <b>911</b>.</div>"
+            "<div class='mt-2 text-xs text-slate-500'>Si estás en peligro, llama al <b>911</b>.</div>"
         )
         return {"html": html, "suggestions": [], "topic": None}
 
