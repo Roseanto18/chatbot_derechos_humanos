@@ -14,7 +14,7 @@
     </div>
 </header>
 <main class="max-w-3xl mx-auto p-4 space-y-4 text-sm leading-relaxed">
-    <p class="text-xs text-slate-500">Última actualización: 14 de noviembre de 2026. Consulta también nuestras <a href="/fuentes" class="underline text-emerald-700">fuentes y base de conocimientos</a>.</p>
+    <p class="text-xs text-slate-500">Última actualización: 18 de noviembre de 2026. Consulta también nuestras <a href="/fuentes" class="underline text-emerald-700">fuentes y base de conocimientos</a>.</p>
 
     <section class="space-y-2">
         <h2 class="font-bold text-base">Identidad y responsabilidad</h2>
@@ -36,9 +36,13 @@
     </section>
 
     <section class="space-y-2">
-        <h2 class="font-bold text-base">Funcionamiento del asistente</h2>
-        <p>El asistente es un sistema basado en reglas. Busca palabras clave en tu mensaje y muestra una respuesta previamente redactada y revisada por el equipo. No utiliza un modelo de lenguaje generativo ni inventa respuestas. Por esta razón puede equivocarse o no entender tu mensaje, y en ese caso te ofrece un menú de temas.</p>
-        <p>La información que ofrece es orientativa. No toma decisiones sobre ti y no sustituye la asesoría de una persona abogada, psicóloga o de una autoridad competente. Si en el futuro se incorporara un modelo de lenguaje externo, este aviso se actualizará antes de activarlo y se informará con claridad qué datos se enviarían.</p>
+        <h2 class="font-bold text-base">Funcionamiento híbrido del asistente</h2>
+        <p>El asistente opera mediante una <strong>arquitectura híbrida</strong> en dos etapas:</p>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Motor local basado en reglas (prioritario):</strong> Analiza palabras clave en tu mensaje para detectar situaciones de urgencia o temas institucionales frecuentes, mostrando respuestas previamente redactadas y auditadas por el equipo sin enviar tu mensaje fuera del servidor.</li>
+            <li><strong>Modelo de lenguaje generativo (respaldo):</strong> Cuando tu consulta no coincide con los temas de la base local, el sistema envía únicamente el texto de tu pregunta a la API de Google Gemini (modelo <em>gemini-2.5-flash</em>) con capacidad de búsqueda web en tiempo real, bajo instrucciones estrictas de neutralidad y apego al marco institucional. Cuando esto ocurre, el sistema te lo indicará explícitamente mediante una etiqueta visible en la respuesta.</li>
+        </ul>
+        <p>La información que ofrece es estrictamente orientativa, puede contener imprecisiones cuando proviene del modelo generativo y no sustituye la asesoría de una persona abogada, psicóloga o de una autoridad competente.</p>
     </section>
 
     <section class="space-y-2">
@@ -48,7 +52,12 @@
 
     <section class="space-y-2">
         <h2 class="font-bold text-base">Transferencias y servicios de terceros</h2>
-        <p>Para operar este sitio se utilizan dos servicios externos. El primero es Render, que aloja el sitio, procesa las solicitudes técnicas y puede conservar en sus bitácoras la dirección IP, la fecha y la ruta consultada. Render no recibe un historial de tu conversación, porque esta no se guarda. El segundo es cdn.tailwindcss.com, que entrega los estilos visuales de la página y, al cargarla, puede recibir tu dirección IP y datos básicos de tu navegador.</p>
+        <p>Para operar este sitio se utilizan tres servicios externos:</p>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Render (Alojamiento web):</strong> Aloja la aplicación, procesa las solicitudes técnicas y puede conservar en sus bitácoras la dirección IP, la fecha y la ruta consultada, sin guardar el historial de tu conversación.</li>
+            <li><strong>Google Cloud / Google AI (API de Gemini):</strong> Recibe únicamente el texto de aquellas consultas abiertas que no coinciden con la base de conocimientos local, con el fin exclusivo de generar una respuesta orientativa y consultar fuentes públicas en internet. No se envían identificadores de usuario, cookies ni tu dirección IP personal desde nuestra aplicación hacia este servicio.</li>
+            <li><strong>Tailwind CSS (CDN):</strong> Entrega los estilos visuales de la página y, al cargarla, puede recibir tu dirección IP y datos básicos de tu navegador.</li>
+        </ul>
         <p>Los enlaces a sitios oficiales, como los de la CODHEM, la CNDH o la UAEMéx, dirigen a páginas de terceros que cuentan con sus propios avisos de privacidad. Fuera de lo anterior, no transferimos datos personales a ninguna otra persona u organización.</p>
     </section>
 
