@@ -106,7 +106,7 @@ class ChatbotModel:
                 )
 
                 response = self.client.models.generate_content(
-                    model='gemini-3.8-flash',
+                    model='gemini-1.5-flash',
                     contents=user_message,
                     config=types.GenerateContentConfig(
                         system_instruction=system_instruction,
