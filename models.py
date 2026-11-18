@@ -1,8 +1,8 @@
 import os
 import re
 import unicodedata
-from google import genai
-from google.genai import types
+from groq import Groq
+from ddgs import DDGS
 import knowledge as kb
 
 MIN_SCORE = 3          # puntaje mínimo para considerar que se entendió un tema
@@ -36,9 +36,9 @@ def _keyword_hit(keyword: str, norm_text: str, tokens: list) -> bool:
 class ChatbotModel:
     def __init__(self):
         self.topics = {t["id"]: t for t in kb.TOPICS}
-        # Inicializar el cliente de Gemini de forma segura con la variable de entorno de Render
-        api_key = os.environ.get("GEMINI_API_KEY")
-        self.client = genai.Client(api_key=api_key) if api_key else None
+        # Inicializar el cliente de Groq de forma segura con la variable de entorno de Render
+        api_key = os.environ.get("GROQ_API_KEY")
+        self.client = Groq(api_key=api_key) if api_key else None
 
     # ------------------------------------------------------------------ API pública
     def menu(self):
@@ -89,66 +89,74 @@ class ChatbotModel:
                             "Si es una emergencia, recuerda que el <b>911</b> está disponible las 24 h.",
                     "suggestions": [], "topic": None}
 
-        # 5) SI NINGUNA REGLA LOCAL COINCIDE: Mandamos la pregunta a Gemini
+        # 5) SI NINGUNA REGLA LOCAL COINCIDE: Buscamos en web y respondemos con Groq
         if self.client:
-            contexto_general = "\n".join(
-                f"- {t['titulo']}: {t.get('fundamento', '')}"
-                for t in self.topics.values()
-                if t.get("fundamento")
-            )
-
-            system_instruction = (
-                "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
-                "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
-                "Básate en el siguiente marco institucional y utiliza la herramienta de búsqueda web en tiempo real si el usuario pregunta por temas externos, noticias o datos actualizados. "
-                "Reglas estrictas: "
-                "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
-                "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
-                "3. Mantén un tono respetuoso, accesible y neutral.\n\n"
-                f"Contexto institucional:\n{contexto_general}"
-            )
-
-            # Intentamos primero con búsqueda web; si la cuota de búsqueda se agota, reintentamos solo con el modelo
-            for usar_busqueda in (True, False):
+            try:
+                # Búsqueda web gratuita en tiempo real (máximo 3 resultados)
+                resultados_web = ""
                 try:
-                    config = types.GenerateContentConfig(
-                        system_instruction=system_instruction,
-                        temperature=0.3,
-                        tools=[{"google_search": {}}] if usar_busqueda else None,
+                    with DDGS() as ddgs:
+                        hits = list(ddgs.text(user_message, region="mx-es", max_results=3))
+                    if hits:
+                        resultados_web = "\n".join(
+                            f"- {h.get('title', '')}: {h.get('body', '')}" for h in hits
+                        )
+                except Exception as search_err:
+                    print(f"Aviso búsqueda web: {search_err}")
+
+                contexto_general = "\n".join(
+                    f"- {t['titulo']}: {t.get('fundamento', '')}"
+                    for t in self.topics.values()
+                    if t.get("fundamento")
+                )
+
+                system_instruction = (
+                    "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
+                    "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
+                    "Reglas estrictas: "
+                    "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
+                    "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
+                    "3. Mantén un tono respetuoso, accesible y neutral.\n\n"
+                    f"Contexto institucional:\n{contexto_general}\n\n"
+                    f"Resultados de búsqueda en internet (úsalos si la pregunta requiere datos actuales o externos):\n{resultados_web}"
+                )
+
+                completion = self.client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=[
+                        {"role": "system", "content": system_instruction},
+                        {"role": "user", "content": user_message},
+                    ],
+                    temperature=0.3,
+                    max_tokens=700,
+                )
+
+                respuesta_texto = completion.choices[0].message.content
+                if respuesta_texto:
+                    texto_formateado = respuesta_texto.replace("\n", "<br>")
+                    etiqueta = (
+                        "🤖 Respuesta generada con IA y búsqueda web:"
+                        if resultados_web
+                        else "🤖 Respuesta generada con IA:"
                     )
-
-                    response = self.client.models.generate_content(
-                        model="gemini-3.8-flash",
-                        contents=user_message,
-                        config=config,
+                    aviso_ia = (
+                        f"<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
+                        f"{etiqueta}</div>"
                     )
+                    html_resp = (
+                        f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
+                        f"<div class='mt-3'>{DISCLAIMER}</div>"
+                    )
+                    suggestions = [
+                        {"id": i["id"], "label": i["label"]}
+                        for i in self.menu()[:3]
+                    ]
+                    return {"html": html_resp, "suggestions": suggestions, "topic": None}
 
-                    if response and response.text:
-                        texto_formateado = response.text.replace("\n", "<br>")
-                        etiqueta = (
-                            "🤖 Respuesta generada con IA y búsqueda web en tiempo real:"
-                            if usar_busqueda
-                            else "🤖 Respuesta generada con IA:"
-                        )
-                        aviso_ia = (
-                            f"<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
-                            f"{etiqueta}</div>"
-                        )
-                        html_resp = (
-                            f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
-                            f"<div class='mt-3'>{DISCLAIMER}</div>"
-                        )
-                        suggestions = [
-                            {"id": i["id"], "label": i["label"]}
-                            for i in self.menu()[:3]
-                        ]
-                        return {"html": html_resp, "suggestions": suggestions, "topic": None}
+            except Exception as e:
+                print(f"Error con Groq: {e}")
 
-                except Exception as e:
-                    print(f"Error con Gemini (busqueda={usar_busqueda}): {e}")
-                    continue
-                    
-    # 6) Fallback estricto solo si fallara la API
+        # 6) Fallback estricto solo si fallara la API
         return self._fallback()
 
     # ------------------------------------------------------------------ internos
