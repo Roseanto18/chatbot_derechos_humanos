@@ -4,7 +4,7 @@ import unicodedata
 from groq import Groq
 import knowledge as kb
 
-MIN_SCORE = 12        # solo dispara ficha estática si hay coincidencia muy fuerte
+MIN_SCORE = 12         # solo dispara ficha estática si hay coincidencia muy fuerte
 URGENT_MIN_SCORE = 3   # puntaje mínimo para activar un tema urgente
 CLOSE_RATIO = 0.6      # otros temas con >= 60 % del puntaje mayor se sugieren como botones
 
@@ -87,13 +87,10 @@ class ChatbotModel:
         for tid, idx in self._search_index.items():
             score = float(keyword_scores.get(tid, 0))
             for qt in q_tokens:
-                # Coincidencia en título pesa más
                 if any(tt.startswith(qt) or qt.startswith(tt) for tt in idx["titulo_tokens"] if len(tt) > 2):
                     score += 3.5
-                # Coincidencia en palabras clave del tema
                 if any(kt.startswith(qt) or qt.startswith(kt) for kt in idx["kw_tokens"] if len(kt) > 2):
                     score += 2.5
-                # Coincidencia en el cuerpo jurídico/informativo completo
                 if any(ct.startswith(qt) for ct in idx["cuerpo_tokens"]):
                     score += 1.0
             if score > 0:
@@ -103,29 +100,29 @@ class ChatbotModel:
         return [tid for _, tid in ranked[:top_k]]
 
     def _format_topic_for_rag(self, tid: str) -> str:
-        """Formatea una ficha completa de knowledge en texto limpio para el prompt de Groq."""
+        """Formatea una ficha de knowledge en texto limpio y compacto para el prompt de Groq."""
         t = self.topics[tid]
         partes = [f"### FICHA: {t['titulo']}"]
         if t.get("intro"):
             partes.append(f"Resumen: {strip_html(t['intro'])}")
         if t.get("derechos"):
-            derechos_limpios = [strip_html(d) for d in t["derechos"]]
+            derechos_limpios = [strip_html(d) for d in t["derechos"][:5]]
             partes.append(f"{t.get('derechos_titulo', 'Puntos clave')}: " + " | ".join(derechos_limpios))
         if t.get("pasos"):
-            pasos_limpios = [strip_html(p) for p in t["pasos"]]
+            pasos_limpios = [strip_html(p) for p in t["pasos"][:5]]
             partes.append(f"{t.get('pasos_titulo', 'Acciones y detalles')}: " + " | ".join(pasos_limpios))
         if t.get("fundamento"):
             partes.append(f"Fundamento legal: {strip_html(t['fundamento'])}")
         if t.get("contactos"):
             ctos = []
-            for cid in t["contactos"]:
+            for cid in t["contactos"][:3]:
                 if cid in kb.CONTACTS:
                     c = kb.CONTACTS[cid]
                     tel = c.get("phone", "")
                     ctos.append(f"{c['name']}" + (f" (Tel: {tel})" if tel else ""))
             if ctos:
-                partes.append("Contactos institucionales: " + "; ".join(ctos))
-        return "\n".join(partes)
+                partes.append("Contactos: " + "; ".join(ctos))
+        return "\n".join(partes)[:1800]
 
     # ------------------------------------------------------------------ API pública
     def menu(self):
@@ -194,13 +191,18 @@ class ChatbotModel:
                 "6. Si detectas riesgo o peligro inminente, indica inmediatamente llamar al **911** o a la **CODHEM (800 999 4000)**.\n\n"
                 f"FICHAS DE CONOCIMIENTO VERIFICADAS:\n{contexto_rag}"
             )
-            try:
-                modelos_disponibles = [
-                    m.id for m in self.client.models.list().data
-                    if "whisper" not in m.id.lower() and "guard" not in m.id.lower() and "tts" not in m.id.lower()
-                ]
 
-                for modelo_groq in modelos_disponibles[:3]:
+            try:
+                todos_modelos = [
+                    m.id for m in self.client.models.list().data
+                    if not any(x in m.id.lower() for x in ("whisper", "guard", "tts", "orpheus", "allam"))
+                ]
+                modelos_disponibles = sorted(
+                    todos_modelos,
+                    key=lambda x: (0 if "llama" in x.lower() else 1, x)
+                )
+
+                for modelo_groq in modelos_disponibles[:4]:
                     try:
                         completion = self.client.chat.completions.create(
                             model=modelo_groq,
