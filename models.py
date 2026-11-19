@@ -9,9 +9,8 @@ URGENT_MIN_SCORE = 3   # puntaje mínimo para activar un tema urgente
 CLOSE_RATIO = 0.6      # otros temas con >= 60 % del puntaje mayor se sugieren como botones
 
 DISCLAIMER = (
-    "<span class='text-xs text-slate-500'>Asistente automatizado de orientación en derechos humanos e IA: "
-    "esta información es solo de referencia, <b>puede contener errores</b> y no sustituye la asesoría de un "
-    "profesional del derecho. Verifica siempre los datos y contactos en fuentes oficiales.</span>"
+    "<span class='text-xs text-slate-500'>Asistente con orientación en derechos humanos e IA: esta información es orientativa "
+    "y no sustituye la asesoría de un profesional del derecho.</span>"
 )
 
 LINK_CLASS = "text-emerald-700 underline font-semibold hover:text-emerald-900"
@@ -180,16 +179,15 @@ class ChatbotModel:
             contexto_rag = "\n\n".join(self._format_topic_for_rag(tid) for tid in top_tids)
 
             system_instruction = (
-                "Eres un asistente automatizado de orientación sobre derechos humanos y normatividad de la IA. "
-                "Tu labor es orientar de forma empática, clara, estructurada y formal, sin presentarte como "
-                "canal oficial ni autoridad.\n\n"
+                "Eres el asistente virtual oficial de derechos humanos y normatividad de la IA de la Facultad de Ingeniería de la UAEMéx. "
+                "Tu labor es orientar de forma empática, clara, estructurada y formal.\n\n"
                 "REGLAS ESTRICTAS DE CONTENIDO:\n"
                 "1. Usa PRIORITARIAMENTE la información de las 'FICHAS DE CONOCIMIENTO VERIFICADAS' de abajo. "
                 "Contienen legislación mexicana y del Estado de México actualizada a 2025-2026 (por ejemplo: Secretaría Anticorrupción y Buen Gobierno en lugar de INAI, Transparencia Mexiquense en lugar de INFOEM, LFPDPPP 2025, Ley Olimpia, Principios de Chapultepec, Plan Nacional de IA 2026, AI Act de la UE). No uses organismos extintos si la ficha indica el vigente.\n"
                 "2. Si las fichas cubren la pregunta del usuario, sintetiza una respuesta directa, clara y bien organizada citando el fundamento legal.\n"
                 "3. Si ninguna ficha trata directamente el tema, responde con tus conocimientos sobre derechos humanos y marco legal mexicano vigente, manteniendo rigor y neutralidad.\n"
                 "4. Formato obligatorio: escribe en párrafos cortos y listas con guiones (-). NO uses tablas Markdown (con |) ni encabezados con # o ##; usa **negritas** para títulos y conceptos clave.\n"
-                "5. Nunca des asesoría jurídica formal ni actúes como abogado, y recuerda que la respuesta puede contener errores y debe verificarse en fuentes oficiales.\n"
+                "5. Nunca des asesoría jurídica formal ni actúes como abogado.\n"
                 "6. Si detectas riesgo o peligro inminente, indica inmediatamente llamar al **911** o a la **CODHEM (800 999 4000)**.\n\n"
                 f"FICHAS DE CONOCIMIENTO VERIFICADAS:\n{contexto_rag}"
             )
@@ -223,7 +221,7 @@ class ChatbotModel:
                             texto_formateado = texto_formateado.replace("\n", "<br>")
                             aviso_ia = (
                                 "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
-                                "🤖 Respuesta generada con IA a partir de nuestra base normativa: puede contener errores; verifica en fuentes oficiales.</div>"
+                                "🤖 Respuesta generada con IA y base normativa UAEMéx:</div>"
                             )
                             html_resp = (
                                 f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
@@ -312,10 +310,9 @@ class ChatbotModel:
 
     def _welcome(self) -> dict:
         html = (
-            "Hola, soy un <b>asistente automatizado de orientación sobre derechos humanos</b>. "
-            "Puedo explicarte tus derechos, orientarte sobre <b>qué hacer ante una situación</b> y facilitarte teléfonos "
-            "de ayuda del Estado de México y de la UAEMéx. "
-            "Esta información es solo de referencia, <b>puede contener errores</b> y debes verificarla en fuentes oficiales.<br><br>"
+            "Hola, soy el <b>asistente de derechos humanos de la Facultad de Ingeniería UAEMéx</b>. "
+            "Puedo explicarte tus derechos, decirte <b>qué hacer ante una situación</b> y darte los "
+            "teléfonos de ayuda del Estado de México y de la universidad.<br><br>"
             "Cuéntame qué te pasó con tus palabras (por ejemplo: <i>\"un profesor me acosa\"</i> o "
             "<i>\"me detuvo la policía\"</i>), o elige una opción:"
             "<div class='mt-2 text-xs text-slate-500'>Si estás en peligro, llama al <b>911</b>.</div>"
