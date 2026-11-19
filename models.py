@@ -4,16 +4,26 @@ import unicodedata
 from groq import Groq
 import knowledge as kb
 
-MIN_SCORE = 6          # puntaje mínimo para responder directo con ficha local
+MIN_SCORE = 8          # solo dispara ficha estática si hay coincidencia muy fuerte
 URGENT_MIN_SCORE = 3   # puntaje mínimo para activar un tema urgente
 CLOSE_RATIO = 0.6      # otros temas con >= 60 % del puntaje mayor se sugieren como botones
 
 DISCLAIMER = (
-    "<span class='text-xs text-slate-500'>Asistente con orientación en derechos humanos y IA: esta información es orientativa "
+    "<span class='text-xs text-slate-500'>Asistente con orientación en derechos humanos e IA: esta información es orientativa "
     "y no sustituye la asesoría de un profesional del derecho.</span>"
 )
 
 LINK_CLASS = "text-emerald-700 underline font-semibold hover:text-emerald-900"
+
+STOPWORDS = {
+    "el", "la", "los", "las", "un", "una", "unos", "unas", "de", "del", "al",
+    "a", "en", "con", "por", "para", "sin", "sobre", "entre", "hasta", "desde",
+    "y", "o", "u", "e", "ni", "que", "cual", "cuales", "quien", "quienes", "como",
+    "cuando", "donde", "cuanto", "cuanta", "es", "son", "ser", "esta", "estan",
+    "estar", "hay", "tiene", "tienen", "tener", "hacer", "hace", "puede", "pueden",
+    "mi", "mis", "tu", "tus", "su", "sus", "me", "te", "se", "nos", "le", "les",
+    "lo", "si", "no", "mas", "muy", "ya", "tambien", "pero", "porque", "asi",
+}
 
 
 def normalize(text: str) -> str:
@@ -22,6 +32,12 @@ def normalize(text: str) -> str:
     text = "".join(c for c in text if unicodedata.category(c) != "Mn")
     text = re.sub(r"[^a-z0-9\s]", " ", text)
     return re.sub(r"\s+", " ", text).strip()
+
+
+def strip_html(text: str) -> str:
+    """Elimina etiquetas HTML para pasar texto limpio al contexto de la IA."""
+    clean = re.sub(r"<[^>]+>", " ", text or "")
+    return re.sub(r"\s+", " ", clean).strip()
 
 
 def _keyword_hit(keyword: str, norm_text: str, tokens: list) -> bool:
@@ -37,6 +53,79 @@ class ChatbotModel:
         self.topics = {t["id"]: t for t in kb.TOPICS}
         api_key = os.environ.get("GROQ_API_KEY")
         self.client = Groq(api_key=api_key) if api_key else None
+        self._search_index = self._build_search_index()
+
+    def _build_search_index(self) -> dict:
+        """Indexa el texto completo de todos los temas (knowledge + unidades + v6) para RAG local."""
+        index = {}
+        for tid, t in self.topics.items():
+            if tid == "mas_temas":
+                continue
+            titulo_norm = normalize(t.get("titulo", ""))
+            cuerpo_raw = " ".join([
+                t.get("intro", ""),
+                " ".join(t.get("derechos", [])),
+                " ".join(t.get("pasos", [])),
+                t.get("fundamento", ""),
+            ])
+            cuerpo_norm = normalize(strip_html(cuerpo_raw))
+            kw_norm = " ".join(kw.rstrip("$") for kw, _ in t.get("keywords", []))
+            index[tid] = {
+                "titulo_tokens": set(titulo_norm.split()) - STOPWORDS,
+                "kw_tokens": set(kw_norm.split()) - STOPWORDS,
+                "cuerpo_tokens": set(cuerpo_norm.split()) - STOPWORDS,
+            }
+        return index
+
+    def _retrieve_relevant_topics(self, norm_query: str, keyword_scores: dict, top_k: int = 3) -> list:
+        """Recupera los temas más relevantes combinando keywords + coincidencia de texto completo."""
+        q_tokens = [tok for tok in norm_query.split() if len(tok) > 2 and tok not in STOPWORDS]
+        if not q_tokens:
+            return []
+
+        ranked = []
+        for tid, idx in self._search_index.items():
+            score = float(keyword_scores.get(tid, 0))
+            for qt in q_tokens:
+                # Coincidencia en título pesa más
+                if any(tt.startswith(qt) or qt.startswith(tt) for tt in idx["titulo_tokens"] if len(tt) > 2):
+                    score += 3.5
+                # Coincidencia en palabras clave del tema
+                if any(kt.startswith(qt) or qt.startswith(kt) for kt in idx["kw_tokens"] if len(kt) > 2):
+                    score += 2.5
+                # Coincidencia en el cuerpo jurídico/informativo completo
+                if any(ct.startswith(qt) for ct in idx["cuerpo_tokens"]):
+                    score += 1.0
+            if score > 0:
+                ranked.append((score, tid))
+
+        ranked.sort(reverse=True)
+        return [tid for _, tid in ranked[:top_k]]
+
+    def _format_topic_for_rag(self, tid: str) -> str:
+        """Formatea una ficha completa de knowledge en texto limpio para el prompt de Groq."""
+        t = self.topics[tid]
+        partes = [f"### FICHA: {t['titulo']}"]
+        if t.get("intro"):
+            partes.append(f"Resumen: {strip_html(t['intro'])}")
+        if t.get("derechos"):
+            derechos_limpios = [strip_html(d) for d in t["derechos"]]
+            partes.append(f"{t.get('derechos_titulo', 'Puntos clave')}: " + " | ".join(derechos_limpios))
+        if t.get("pasos"):
+            pasos_limpios = [strip_html(p) for p in t["pasos"]]
+            partes.append(f"{t.get('pasos_titulo', 'Acciones y detalles')}: " + " | ".join(pasos_limpios))
+        if t.get("fundamento"):
+            partes.append(f"Fundamento legal: {strip_html(t['fundamento'])}")
+        if t.get("contactos"):
+            ctos = []
+            for cid in t["contactos"]:
+                if cid in kb.CONTACTS:
+                    c = kb.CONTACTS[cid]
+                    tel = c.get("phone", "")
+                    ctos.append(f"{c['name']}" + (f" (Tel: {tel})" if tel else ""))
+            if ctos:
+                partes.append("Contactos institucionales: " + "; ".join(ctos))
+        return "\n".join(partes)
 
     # ------------------------------------------------------------------ API pública
     def menu(self):
@@ -73,7 +162,7 @@ class ChatbotModel:
         if src_score >= MIN_SCORE and src_score >= best:
             return self._sources()
 
-        # 3) Tema con mejor puntaje local
+        # 3) Coincidencia local muy fuerte (ahorra API y responde al instante)
         if best >= MIN_SCORE:
             extra = [tid for tid, s in sorted(scores.items(), key=lambda kv: -kv[1])
                      if tid != best_tid and s >= MIN_SCORE and s >= best * CLOSE_RATIO][:2]
@@ -87,39 +176,22 @@ class ChatbotModel:
                             "Si es una emergencia, recuerda que el <b>911</b> está disponible las 24 h.",
                     "suggestions": [], "topic": None}
 
-        # 5) ZONA GRIS O PREGUNTA ABIERTA: Groq evalúa el contexto apoyándose en el tema más cercano
+        # 5) MINI-RAG + GROQ: Busca en los 3 archivos knowledge y responde con base jurídica actualizada
         if self.client:
-            # Si hubo al menos una coincidencia parcial (best > 0), extraemos esa ficha como contexto
-            contexto_tema_cercano = ""
-            if best > 0 and best_tid in self.topics:
-                t_cercano = self.topics[best_tid]
-                derechos_str = "; ".join(t_cercano.get("derechos", []))
-                pasos_str = "; ".join(t_cercano.get("pasos", []))
-                contexto_tema_cercano = (
-                    f"\nTema de la base local con mayor coincidencia ({t_cercano['titulo']}):\n"
-                    f"- Resumen: {t_cercano.get('intro', '')}\n"
-                    f"- Derechos clave: {derechos_str}\n"
-                    f"- Pasos recomendados: {pasos_str}\n"
-                    f"- Fundamento: {t_cercano.get('fundamento', '')}\n"
-                )
-
-            contexto_general = "\n".join(
-                f"- {t['titulo']}: {t.get('fundamento', '')}"
-                for t in self.topics.values()
-                if t.get("fundamento")
-            )
+            top_tids = self._retrieve_relevant_topics(norm, scores, top_k=3)
+            contexto_rag = "\n\n".join(self._format_topic_for_rag(tid) for tid in top_tids)
 
             system_instruction = (
-                "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
-                "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
-                "Instrucciones de contexto:\n"
-                "1. Revisa el 'Tema de la base local con mayor coincidencia'. Si realmente responde a la situación del usuario, úsalo como base para redactar una respuesta personalizada y directa. "
-                "Si la pregunta del usuario trata sobre otro tema (por ejemplo, derechos digitales, leyes específicas o dudas generales), ignora esa ficha parcial y responde con tus conocimientos sobre el marco legal mexicano e institucional.\n"
-                "2. Nunca des asesoría jurídica formal ni actúes como abogado.\n"
-                "3. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000).\n"
-                "4. Usa **negritas** para resaltar conceptos clave y mantén un tono respetuoso y accesible.\n\n"
-                f"{contexto_tema_cercano}\n"
-                f"Catálogo general de fundamentos institucionales:\n{contexto_general}"
+                "Eres el asistente virtual oficial de derechos humanos y normatividad de la IA de la Facultad de Ingeniería de la UAEMéx. "
+                "Tu labor es orientar de forma empática, clara, estructurada y formal.\n\n"
+                "REGLAS ESTRICTAS DE CONTENIDO:\n"
+                "1. Usa PRIORITARIAMENTE la información de las 'FICHAS DE CONOCIMIENTO VERIFICADAS' de abajo. "
+                "Contienen legislación mexicana y del Estado de México actualizada a 2025-2026 (por ejemplo: Secretaría Anticorrupción y Buen Gobierno en lugar de INAI, Transparencia Mexiquense en lugar de INFOEM, LFPDPPP 2025, Ley Olimpia, Principios de Chapultepec, Plan Nacional de IA 2026, AI Act de la UE). No uses organismos extintos si la ficha indica el vigente.\n"
+                "2. Si las fichas cubren la pregunta del usuario, sintetiza una respuesta directa, clara y bien organizada (usa listas con guiones y **negritas** para conceptos clave, leyes y teléfonos) citando el fundamento legal.\n"
+                "3. Si ninguna ficha trata directamente el tema, responde con tus conocimientos sobre derechos humanos y marco legal mexicano vigente, manteniendo rigor y neutralidad.\n"
+                "4. Nunca des asesoría jurídica formal ni actúes como abogado.\n"
+                "5. Si detectas riesgo o peligro inminente, indica inmediatamente llamar al **911** o a la **CODHEM (800 999 4000)**.\n\n"
+                f"FICHAS DE CONOCIMIENTO VERIFICADAS:\n{contexto_rag}"
             )
 
             try:
@@ -136,8 +208,8 @@ class ChatbotModel:
                                 {"role": "system", "content": system_instruction},
                                 {"role": "user", "content": user_message},
                             ],
-                            temperature=0.3,
-                            max_tokens=700,
+                            temperature=0.25,
+                            max_tokens=850,
                         )
 
                         respuesta_texto = completion.choices[0].message.content
@@ -146,13 +218,13 @@ class ChatbotModel:
                             texto_formateado = texto_formateado.replace("\n", "<br>")
                             aviso_ia = (
                                 "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
-                                "🤖 Respuesta generada con IA:</div>"
+                                "🤖 Respuesta generada con IA y base normativa UAEMéx:</div>"
                             )
                             html_resp = (
                                 f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
                                 f"<div class='mt-3'>{DISCLAIMER}</div>"
                             )
-                            sugerencias_ids = ([best_tid] if best > 0 else []) + [i["id"] for i in self.menu()[:2]]
+                            sugerencias_ids = top_tids[:2] + [i["id"] for i in self.menu()[:1]]
                             suggestions = self._suggestions(list(dict.fromkeys(sugerencias_ids))[:3])
                             return {"html": html_resp, "suggestions": suggestions, "topic": None}
                     except Exception as err_mod:
@@ -177,9 +249,9 @@ class ChatbotModel:
     def _suggestions(self, ids):
         out = []
         for i in ids:
-            if i == "fuentes":  # tema especial (no está en TOPICS)
+            if i == "fuentes":
                 out.append({"id": "fuentes", "label": "Fuentes de información"})
-            else:
+            elif i in self.topics:
                 out.append({"id": i, "label": self._button_label(self.topics[i])})
         return out
 
