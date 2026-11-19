@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Derechos Humanos </title>
+    <title>Derechos Humanos</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 h-screen flex flex-col">
@@ -11,7 +11,7 @@
     <!-- Encabezado -->
     <header class="bg-emerald-800 text-white p-4 shadow-md flex justify-between items-center border-b-4 border-amber-500">
         <div>
-            <h1 class="text-lg sm:text-xl font-bold">Derechos Humanos </h1>
+            <h1 class="text-lg sm:text-xl font-bold">Derechos Humanos</h1>
             <div class="text-xs font-semibold text-amber-300 mt-0.5 tracking-wide">PROYECTO DE NORMATIVIDAD IIA 2026</div>
             <p class="text-xs text-amber-200 mt-1">Orientación estudiantil, apoyo a víctimas y salud mental</p>
         </div>
@@ -36,11 +36,10 @@
                 Enviar
             </button>
         </form>
-        <p class="text-sm text-slate-700 mt-2">
-            Este asistente es un proyecto académico independiente (no es un canal oficial de la UAEMéx ni de ninguna autoridad). No guardamos tus mensajes ni te pedimos nombre, correo o cuenta. Solo cuando una pregunta abierta no coincide con nuestras fichas locales, el texto aislado de la consulta se procesa mediante un modelo de IA externo (Groq) apoyado en nuestra base normativa, sin enviar tu IP ni datos personales. El alojamiento web puede registrar datos técnicos de conexión, por lo que te recomendamos no escribir información que te identifique.
-        </p>
-        <p class="text-sm text-slate-700 mt-2">
-            La información es solo orientativa, puede cometer errores o imprecisiones y no sustituye la asesoría de una persona abogada. Verifica siempre los datos en fuentes oficiales. En caso de emergencia, llama al 911.
+        <p class="max-w-4xl mx-auto text-[10px] leading-tight text-slate-500 mt-1.5 text-center">
+            Asistente automatizado (no es una persona ni un abogado). Información orientativa; puede cometer errores, verifica siempre los datos en fuentes oficiales. No se guardan tus mensajes.
+            <a href="/privacidad" class="underline text-emerald-700">Aviso de privacidad</a> ·
+            <a href="/fuentes" class="underline text-emerald-700">Fuentes</a>
         </p>
     </footer>
 
@@ -50,10 +49,10 @@
         <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-5 border-t-4 border-amber-500 max-h-[90vh] overflow-y-auto">
             <h2 id="privacy-title" class="text-lg font-bold text-emerald-800">Aviso de privacidad</h2>
             <p class="text-sm text-slate-700 mt-2">
-                Este asistente es un proyecto académico de la Facultad de Ingeniería de la UAEMéx. No guardamos tus mensajes ni te pedimos nombre, correo o cuenta, y lo que escribes no se envía a terceros ni a ninguna inteligencia artificial externa. El servicio de alojamiento puede registrar datos técnicos de conexión, como la dirección IP, por lo que te recomendamos no escribir datos que te identifiquen.
+                Este asistente es un proyecto académico independiente (no es un canal oficial de la UAEMéx ni de ninguna autoridad). No guardamos tus mensajes ni te pedimos nombre, correo o cuenta. Solo cuando una pregunta abierta no coincide con nuestras fichas locales, el texto aislado de la consulta se procesa mediante un modelo de IA externo (Groq) apoyado en nuestra base normativa, sin enviar tu IP ni datos personales. El alojamiento web puede registrar datos técnicos de conexión, por lo que te recomendamos no escribir información que te identifique.
             </p>
             <p class="text-sm text-slate-700 mt-2">
-                La información es solo orientativa y no sustituye la asesoría de una persona abogada. En caso de emergencia, llama al 911.
+                La información es solo orientativa, puede cometer errores o imprecisiones y no sustituye la asesoría de una persona abogada. Verifica siempre los datos en fuentes oficiales. En caso de emergencia, llama al 911.
             </p>
             <p class="text-sm mt-3">
                 Puedes consultar el <a href="/privacidad" target="_blank" rel="noopener" class="text-emerald-700 underline font-semibold">aviso de privacidad completo</a>, donde se explica cómo ejercer tus derechos ARCO.
@@ -157,7 +156,7 @@
         privacyAccept.addEventListener('click', () => { privacyModal.remove(); userInput.focus(); });
         privacyAccept.focus();
 
-       // Mensaje de bienvenida con botones rápidos
+        // Mensaje de bienvenida con botones rápidos
         addBotMessage(
             'Hola, soy un <b>asistente automatizado de orientación sobre derechos humanos</b>. ' +
             'Puedo explicarte tus derechos, orientarte sobre <b>qué hacer ante una situación</b> y facilitarte teléfonos ' +
@@ -167,5 +166,6 @@
             '<i>"me detuvo la policía"</i>), o elige una opción:',
             MENU
         );
+    </script>
 </body>
 </html>
