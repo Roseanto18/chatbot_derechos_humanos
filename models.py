@@ -88,7 +88,7 @@ class ChatbotModel:
                             "Si es una emergencia, recuerda que el <b>911</b> está disponible las 24 h.",
                     "suggestions": [], "topic": None}
 
-        # 5) SI NINGUNA REGLA LOCAL COINCIDE: Mandamos la pregunta a Groq con búsqueda web nativa
+       # 5) SI NINGUNA REGLA LOCAL COINCIDE: Mandamos la pregunta a Groq usando el modelo activo de tu cuenta
         if self.client:
             contexto_general = "\n".join(
                 f"- {t['titulo']}: {t.get('fundamento', '')}"
@@ -99,7 +99,6 @@ class ChatbotModel:
             system_instruction = (
                 "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
                 "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
-                "Si el usuario pregunta por información externa, noticias o datos actuales, busca en internet antes de responder. "
                 "Reglas estrictas: "
                 "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
                 "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
@@ -107,38 +106,48 @@ class ChatbotModel:
                 f"Contexto institucional:\n{contexto_general}"
             )
 
-            for modelo_groq in ("groq/compound", "groq/compound-mini"):
-                try:
-                    completion = self.client.chat.completions.create(
-                        model=modelo_groq,
-                        messages=[
-                            {"role": "system", "content": system_instruction},
-                            {"role": "user", "content": user_message},
-                        ],
-                        temperature=0.3,
-                        max_tokens=700,
-                    )
+            try:
+                # Consultamos automáticamente qué modelos de texto tiene activos tu API Key
+                modelos_disponibles = [
+                    m.id for m in self.client.models.list().data
+                    if "whisper" not in m.id.lower() and "guard" not in m.id.lower() and "tts" not in m.id.lower()
+                ]
+                print("Modelos activos en tu cuenta:", modelos_disponibles)
 
-                    respuesta_texto = completion.choices[0].message.content
-                    if respuesta_texto:
-                        texto_formateado = respuesta_texto.replace("\n", "<br>")
-                        aviso_ia = (
-                            "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
-                            "🤖 Respuesta generada con IA y búsqueda web:</div>"
+                for modelo_groq in modelos_disponibles[:3]:
+                    try:
+                        completion = self.client.chat.completions.create(
+                            model=modelo_groq,
+                            messages=[
+                                {"role": "system", "content": system_instruction},
+                                {"role": "user", "content": user_message},
+                            ],
+                            temperature=0.3,
+                            max_tokens=700,
                         )
-                        html_resp = (
-                            f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
-                            f"<div class='mt-3'>{DISCLAIMER}</div>"
-                        )
-                        suggestions = [
-                            {"id": i["id"], "label": i["label"]}
-                            for i in self.menu()[:3]
-                        ]
-                        return {"html": html_resp, "suggestions": suggestions, "topic": None}
 
-                except Exception as e:
-                    print(f"Error con Groq ({modelo_groq}): {e}")
-                    continue
+                        respuesta_texto = completion.choices[0].message.content
+                        if respuesta_texto:
+                            texto_formateado = respuesta_texto.replace("\n", "<br>")
+                            aviso_ia = (
+                                "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
+                                "🤖 Respuesta generada con IA:</div>"
+                            )
+                            html_resp = (
+                                f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
+                                f"<div class='mt-3'>{DISCLAIMER}</div>"
+                            )
+                            suggestions = [
+                                {"id": i["id"], "label": i["label"]}
+                                for i in self.menu()[:3]
+                            ]
+                            return {"html": html_resp, "suggestions": suggestions, "topic": None}
+                    except Exception as err_mod:
+                        print(f"Fallo con {modelo_groq}: {err_mod}")
+                        continue
+
+            except Exception as e:
+                print(f"Error general con Groq: {e}")
 
         # 6) Fallback estricto solo si fallara la API
         return self._fallback()
