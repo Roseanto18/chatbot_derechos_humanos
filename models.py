@@ -4,7 +4,7 @@ import unicodedata
 from groq import Groq
 import knowledge as kb
 
-MIN_SCORE = 8          # solo dispara ficha estática si hay coincidencia muy fuerte
+MIN_SCORE = 12        # solo dispara ficha estática si hay coincidencia muy fuerte
 URGENT_MIN_SCORE = 3   # puntaje mínimo para activar un tema urgente
 CLOSE_RATIO = 0.6      # otros temas con >= 60 % del puntaje mayor se sugieren como botones
 
@@ -187,13 +187,13 @@ class ChatbotModel:
                 "REGLAS ESTRICTAS DE CONTENIDO:\n"
                 "1. Usa PRIORITARIAMENTE la información de las 'FICHAS DE CONOCIMIENTO VERIFICADAS' de abajo. "
                 "Contienen legislación mexicana y del Estado de México actualizada a 2025-2026 (por ejemplo: Secretaría Anticorrupción y Buen Gobierno en lugar de INAI, Transparencia Mexiquense en lugar de INFOEM, LFPDPPP 2025, Ley Olimpia, Principios de Chapultepec, Plan Nacional de IA 2026, AI Act de la UE). No uses organismos extintos si la ficha indica el vigente.\n"
-                "2. Si las fichas cubren la pregunta del usuario, sintetiza una respuesta directa, clara y bien organizada (usa listas con guiones y **negritas** para conceptos clave, leyes y teléfonos) citando el fundamento legal.\n"
+                "2. Si las fichas cubren la pregunta del usuario, sintetiza una respuesta directa, clara y bien organizada citando el fundamento legal.\n"
                 "3. Si ninguna ficha trata directamente el tema, responde con tus conocimientos sobre derechos humanos y marco legal mexicano vigente, manteniendo rigor y neutralidad.\n"
-                "4. Nunca des asesoría jurídica formal ni actúes como abogado.\n"
-                "5. Si detectas riesgo o peligro inminente, indica inmediatamente llamar al **911** o a la **CODHEM (800 999 4000)**.\n\n"
+                "4. Formato obligatorio: escribe en párrafos cortos y listas con guiones (-). NO uses tablas Markdown (con |) ni encabezados con # o ##; usa **negritas** para títulos y conceptos clave.\n"
+                "5. Nunca des asesoría jurídica formal ni actúes como abogado.\n"
+                "6. Si detectas riesgo o peligro inminente, indica inmediatamente llamar al **911** o a la **CODHEM (800 999 4000)**.\n\n"
                 f"FICHAS DE CONOCIMIENTO VERIFICADAS:\n{contexto_rag}"
             )
-
             try:
                 modelos_disponibles = [
                     m.id for m in self.client.models.list().data
@@ -214,7 +214,8 @@ class ChatbotModel:
 
                         respuesta_texto = completion.choices[0].message.content
                         if respuesta_texto:
-                            texto_formateado = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", respuesta_texto)
+                            texto_formateado = re.sub(r"^#{1,3}\s+(.+)$", r"<b>\1</b>", respuesta_texto, flags=re.MULTILINE)
+                            texto_formateado = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", texto_formateado)
                             texto_formateado = texto_formateado.replace("\n", "<br>")
                             aviso_ia = (
                                 "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
