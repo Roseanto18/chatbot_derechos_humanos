@@ -1411,7 +1411,7 @@ TOPICS = [
             "se aplican normas generales: Constitución, leyes de datos personales de 2025, Ley General de Acceso de las Mujeres a una Vida Libre de Violencias y Ley Olimpia, entre otras. Verifica si hubo reformas recientes.",
             "Si una decisión automatizada te perjudica: pide <b>por escrito</b> información sobre el sistema, los datos usados y los criterios, y que <b>una persona</b> revise tu caso.",
             "Ejerce tus derechos <b>ARCO</b> para saber qué datos tuyos se usaron. Si crees que hubo discriminación, acude a la Defensoría universitaria o a la CODHEM.",
-            "<i>Transparencia:</i> este asistente <b>no usa IA generativa</b>; responde con reglas y contenido revisado, por eso no inventa leyes ni teléfonos.",
+            "<i>Transparencia:</i> este asistente opera con una <b>arquitectura híbrida</b>: prioriza fichas normativas verificadas por reglas locales y, solo ante preguntas abiertas, utiliza recuperación local (Mini-RAG) junto con modelos de lenguaje vía <b>Groq</b> etiquetando explícitamente la respuesta.",
         ],
         "contactos": ["codhem", "defensoria_uaemex", "sabg"],
         "fundamento": "CPEUM Arts. 1°, 6° y 16; Principios de Chapultepec (Secihti-ATDT, 29-ene-2026); Recomendación de la UNESCO sobre la ética de la IA; Programa de Normatividad de la IA, Unidad 4 (4.1).",
