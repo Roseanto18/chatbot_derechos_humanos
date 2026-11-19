@@ -648,7 +648,7 @@ TOPICS = [
         "boton": "¿Qué son los derechos humanos?",
         "relacionados": ["origen_dh", "lista_dh", "derechos_generales", "derechos_estudiante"],
         "keywords": [
-            ("que son los derechos humanos", 6), ("que son los derechos", 5), ("que son derechos humanos", 6),
+            ("que son los derechos humanos", 12), ("que son los derechos", 8), ("que son derechos humanos", 12),
             ("que significa derechos humanos", 6), ("que son mis derechos", 5),
             ("que es un derecho humano", 6), ("que es derecho humano", 6),
             ("para que sirven los derechos", 6), ("para que sirven los derechos humanos", 6),
