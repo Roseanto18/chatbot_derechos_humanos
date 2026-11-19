@@ -2,7 +2,6 @@ import os
 import re
 import unicodedata
 from groq import Groq
-from ddgs import DDGS
 import knowledge as kb
 
 MIN_SCORE = 3          # puntaje mínimo para considerar que se entendió un tema
@@ -89,72 +88,57 @@ class ChatbotModel:
                             "Si es una emergencia, recuerda que el <b>911</b> está disponible las 24 h.",
                     "suggestions": [], "topic": None}
 
-        # 5) SI NINGUNA REGLA LOCAL COINCIDE: Buscamos en web y respondemos con Groq
+        # 5) SI NINGUNA REGLA LOCAL COINCIDE: Mandamos la pregunta a Groq con búsqueda web nativa
         if self.client:
-            try:
-                # Búsqueda web gratuita en tiempo real (máximo 3 resultados)
-                resultados_web = ""
+            contexto_general = "\n".join(
+                f"- {t['titulo']}: {t.get('fundamento', '')}"
+                for t in self.topics.values()
+                if t.get("fundamento")
+            )
+
+            system_instruction = (
+                "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
+                "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
+                "Si el usuario pregunta por información externa, noticias o datos actuales, busca en internet antes de responder. "
+                "Reglas estrictas: "
+                "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
+                "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
+                "3. Mantén un tono respetuoso, accesible y neutral.\n\n"
+                f"Contexto institucional:\n{contexto_general}"
+            )
+
+            for modelo_groq in ("groq/compound", "groq/compound-mini"):
                 try:
-                    with DDGS() as ddgs:
-                        hits = list(ddgs.text(user_message, region="mx-es", max_results=3))
-                    if hits:
-                        resultados_web = "\n".join(
-                            f"- {h.get('title', '')}: {h.get('body', '')}" for h in hits
+                    completion = self.client.chat.completions.create(
+                        model=modelo_groq,
+                        messages=[
+                            {"role": "system", "content": system_instruction},
+                            {"role": "user", "content": user_message},
+                        ],
+                        temperature=0.3,
+                        max_tokens=700,
+                    )
+
+                    respuesta_texto = completion.choices[0].message.content
+                    if respuesta_texto:
+                        texto_formateado = respuesta_texto.replace("\n", "<br>")
+                        aviso_ia = (
+                            "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
+                            "🤖 Respuesta generada con IA y búsqueda web:</div>"
                         )
-                except Exception as search_err:
-                    print(f"Aviso búsqueda web: {search_err}")
+                        html_resp = (
+                            f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
+                            f"<div class='mt-3'>{DISCLAIMER}</div>"
+                        )
+                        suggestions = [
+                            {"id": i["id"], "label": i["label"]}
+                            for i in self.menu()[:3]
+                        ]
+                        return {"html": html_resp, "suggestions": suggestions, "topic": None}
 
-                contexto_general = "\n".join(
-                    f"- {t['titulo']}: {t.get('fundamento', '')}"
-                    for t in self.topics.values()
-                    if t.get("fundamento")
-                )
-
-                system_instruction = (
-                    "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
-                    "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
-                    "Reglas estrictas: "
-                    "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
-                    "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
-                    "3. Mantén un tono respetuoso, accesible y neutral.\n\n"
-                    f"Contexto institucional:\n{contexto_general}\n\n"
-                    f"Resultados de búsqueda en internet (úsalos si la pregunta requiere datos actuales o externos):\n{resultados_web}"
-                )
-
-                completion = self.client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
-                    messages=[
-                        {"role": "system", "content": system_instruction},
-                        {"role": "user", "content": user_message},
-                    ],
-                    temperature=0.3,
-                    max_tokens=700,
-                )
-
-                respuesta_texto = completion.choices[0].message.content
-                if respuesta_texto:
-                    texto_formateado = respuesta_texto.replace("\n", "<br>")
-                    etiqueta = (
-                        "🤖 Respuesta generada con IA y búsqueda web:"
-                        if resultados_web
-                        else "🤖 Respuesta generada con IA:"
-                    )
-                    aviso_ia = (
-                        f"<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
-                        f"{etiqueta}</div>"
-                    )
-                    html_resp = (
-                        f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
-                        f"<div class='mt-3'>{DISCLAIMER}</div>"
-                    )
-                    suggestions = [
-                        {"id": i["id"], "label": i["label"]}
-                        for i in self.menu()[:3]
-                    ]
-                    return {"html": html_resp, "suggestions": suggestions, "topic": None}
-
-            except Exception as e:
-                print(f"Error con Groq: {e}")
+                except Exception as e:
+                    print(f"Error con Groq ({modelo_groq}): {e}")
+                    continue
 
         # 6) Fallback estricto solo si fallara la API
         return self._fallback()
