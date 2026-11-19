@@ -128,7 +128,8 @@ class ChatbotModel:
 
                         respuesta_texto = completion.choices[0].message.content
                         if respuesta_texto:
-                            texto_formateado = respuesta_texto.replace("\n", "<br>")
+                            texto_formateado = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", respuesta_texto)
+                            texto_formateado = texto_formateado.replace("\n", "<br>")
                             aviso_ia = (
                                 "<div class='mb-2 text-xs font-semibold text-indigo-700 bg-indigo-50 p-2 rounded'>"
                                 "🤖 Respuesta generada con IA:</div>"
