@@ -4,7 +4,7 @@ import unicodedata
 from groq import Groq
 import knowledge as kb
 
-MIN_SCORE = 3          # puntaje mínimo para considerar que se entendió un tema
+MIN_SCORE = 6         # puntaje mínimo para considerar que se entendió un tema
 URGENT_MIN_SCORE = 3   # puntaje mínimo para activar un tema urgente
 CLOSE_RATIO = 0.6      # otros temas con >= 60 % del puntaje mayor se sugieren como botones
 
