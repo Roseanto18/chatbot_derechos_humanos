@@ -4,7 +4,7 @@ import unicodedata
 from groq import Groq
 import knowledge as kb
 
-MIN_SCORE = 6         # puntaje mínimo para considerar que se entendió un tema
+MIN_SCORE = 6          # puntaje mínimo para responder directo con ficha local
 URGENT_MIN_SCORE = 3   # puntaje mínimo para activar un tema urgente
 CLOSE_RATIO = 0.6      # otros temas con >= 60 % del puntaje mayor se sugieren como botones
 
@@ -35,7 +35,6 @@ def _keyword_hit(keyword: str, norm_text: str, tokens: list) -> bool:
 class ChatbotModel:
     def __init__(self):
         self.topics = {t["id"]: t for t in kb.TOPICS}
-        # Inicializar el cliente de Groq de forma segura con la variable de entorno de Render
         api_key = os.environ.get("GROQ_API_KEY")
         self.client = Groq(api_key=api_key) if api_key else None
 
@@ -88,8 +87,22 @@ class ChatbotModel:
                             "Si es una emergencia, recuerda que el <b>911</b> está disponible las 24 h.",
                     "suggestions": [], "topic": None}
 
-       # 5) SI NINGUNA REGLA LOCAL COINCIDE: Mandamos la pregunta a Groq usando el modelo activo de tu cuenta
+        # 5) ZONA GRIS O PREGUNTA ABIERTA: Groq evalúa el contexto apoyándose en el tema más cercano
         if self.client:
+            # Si hubo al menos una coincidencia parcial (best > 0), extraemos esa ficha como contexto
+            contexto_tema_cercano = ""
+            if best > 0 and best_tid in self.topics:
+                t_cercano = self.topics[best_tid]
+                derechos_str = "; ".join(t_cercano.get("derechos", []))
+                pasos_str = "; ".join(t_cercano.get("pasos", []))
+                contexto_tema_cercano = (
+                    f"\nTema de la base local con mayor coincidencia ({t_cercano['titulo']}):\n"
+                    f"- Resumen: {t_cercano.get('intro', '')}\n"
+                    f"- Derechos clave: {derechos_str}\n"
+                    f"- Pasos recomendados: {pasos_str}\n"
+                    f"- Fundamento: {t_cercano.get('fundamento', '')}\n"
+                )
+
             contexto_general = "\n".join(
                 f"- {t['titulo']}: {t.get('fundamento', '')}"
                 for t in self.topics.values()
@@ -99,20 +112,21 @@ class ChatbotModel:
             system_instruction = (
                 "Eres el asistente virtual oficial de derechos humanos de la Facultad de Ingeniería de la UAEMéx. "
                 "Tu labor es orientar de forma empática, clara y formal sobre derechos humanos, normatividad y protocolos institucionales. "
-                "Reglas estrictas: "
-                "1. Nunca des asesoría jurídica formal ni actúes como abogado. "
-                "2. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000). "
-                "3. Mantén un tono respetuoso, accesible y neutral.\n\n"
-                f"Contexto institucional:\n{contexto_general}"
+                "Instrucciones de contexto:\n"
+                "1. Revisa el 'Tema de la base local con mayor coincidencia'. Si realmente responde a la situación del usuario, úsalo como base para redactar una respuesta personalizada y directa. "
+                "Si la pregunta del usuario trata sobre otro tema (por ejemplo, derechos digitales, leyes específicas o dudas generales), ignora esa ficha parcial y responde con tus conocimientos sobre el marco legal mexicano e institucional.\n"
+                "2. Nunca des asesoría jurídica formal ni actúes como abogado.\n"
+                "3. Si hay riesgo o peligro inminente, indica inmediatamente que llamen al 911 o a la CODHEM (800 999 4000).\n"
+                "4. Usa **negritas** para resaltar conceptos clave y mantén un tono respetuoso y accesible.\n\n"
+                f"{contexto_tema_cercano}\n"
+                f"Catálogo general de fundamentos institucionales:\n{contexto_general}"
             )
 
             try:
-                # Consultamos automáticamente qué modelos de texto tiene activos tu API Key
                 modelos_disponibles = [
                     m.id for m in self.client.models.list().data
                     if "whisper" not in m.id.lower() and "guard" not in m.id.lower() and "tts" not in m.id.lower()
                 ]
-                print("Modelos activos en tu cuenta:", modelos_disponibles)
 
                 for modelo_groq in modelos_disponibles[:3]:
                     try:
@@ -138,10 +152,8 @@ class ChatbotModel:
                                 f"{aviso_ia}<div class='mt-1'>{texto_formateado}</div>"
                                 f"<div class='mt-3'>{DISCLAIMER}</div>"
                             )
-                            suggestions = [
-                                {"id": i["id"], "label": i["label"]}
-                                for i in self.menu()[:3]
-                            ]
+                            sugerencias_ids = ([best_tid] if best > 0 else []) + [i["id"] for i in self.menu()[:2]]
+                            suggestions = self._suggestions(list(dict.fromkeys(sugerencias_ids))[:3])
                             return {"html": html_resp, "suggestions": suggestions, "topic": None}
                     except Exception as err_mod:
                         print(f"Fallo con {modelo_groq}: {err_mod}")
